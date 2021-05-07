@@ -17,3 +17,11 @@ void Link::linkPrint()
 {
     printf("<%d, %d> -> <%d, %d>", _prevNode.first, _prevNode.second, _nextNode.first, _nextNode.second);
 }
+
+double Link::distanceToNode(pair<int, int> node)
+{
+    int d1 = abs(node.first - _prevNode.first) + abs(node.second - _prevNode.second);
+    int d2 = abs(node.first - _nextNode.first) + abs(node.second - _nextNode.second);
+    int d = d1 < d2 ? d1 : d2;
+    return d + 0.5; // the dummy link?
+}

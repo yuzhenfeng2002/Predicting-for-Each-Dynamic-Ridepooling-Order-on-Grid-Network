@@ -37,10 +37,10 @@ public:
             double speed); // initialize a m*n network
     void generateODPairs(int number, double lambda,
                          int xmin, int ymin, int xmax, int ymax); // generate {number}s OD pairs and constain *destinations* in a rectangle ranging from (xmin, ymin) to (xmax, ymax)
-    void generateSeakerStates();
-    void generateTakerStates();
+    void generateSeakerStates(); // generate all the seeker states
+    void generateTakerStates(); // generate all the taker states
     void printPairs(); // print all the pairs
-    void printStates();
+    void printStates(); // print all the seeker and taker states
 };
 
 #endif /* Network_hpp */

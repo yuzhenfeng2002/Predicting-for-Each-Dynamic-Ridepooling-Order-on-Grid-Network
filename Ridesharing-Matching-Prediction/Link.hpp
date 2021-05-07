@@ -16,11 +16,12 @@ using std::pair;
 class Link
 {
 private:
-    pair<int, int> _prevNode;
-    pair<int, int> _nextNode;
+    pair<int, int> _prevNode; // the link's previous node
+    pair<int, int> _nextNode; // the link's next node
 public:
     Link(pair<int, int> prevNode, pair<int, int> nextNode); // initialize the link
-    void linkPrint();
+    double distanceToNode(pair<int, int> node); // calculate the distance from the link to a node(approximately)
+    void linkPrint(); // print the link
 };
 
 

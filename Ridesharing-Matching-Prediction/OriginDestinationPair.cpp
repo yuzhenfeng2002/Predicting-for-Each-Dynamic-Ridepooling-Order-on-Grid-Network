@@ -19,6 +19,8 @@ OriginDestinationPair::OriginDestinationPair(pair<int, int> origin,
 vector<Link> OriginDestinationPair::generateLinks()
 {
     vector<Link> links = vector<Link>();
+    links.push_back(Link(pair<int, int>{_origin.first, _origin.second}, pair<int, int>{_origin.first, _origin.second})); // add the dummy link
+    
     bool isOriginMin = _origin.first < _destination.first;
     if (isOriginMin) {
         for (int i = _origin.first; i < _destination.first; i++) {
@@ -45,6 +47,16 @@ vector<Link> OriginDestinationPair::generateLinks()
         }
     }
     return links;
+}
+
+pair<int, int> OriginDestinationPair::getOrigin()
+{
+    return _origin;
+}
+
+pair<int, int> OriginDestinationPair::getDestination()
+{
+    return _destination;
 }
 
 void OriginDestinationPair::odPairPrint()

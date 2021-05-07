@@ -19,13 +19,14 @@ class OriginDestinationPair {
 private:
     pair<int, int> _origin;
     pair<int, int> _destination;
-//    vector<Link> links;
     double _lambda;
 public:
     OriginDestinationPair(pair<int, int> origin,
                           pair<int, int> destination,
                           double lambda); // initialize the pair
     vector<Link> generateLinks(); // for each OD pair, generate the links traverse from O to D
+    pair<int, int> getOrigin();
+    pair<int, int> getDestination();
     void odPairPrint(); // print the pair
 };
 
