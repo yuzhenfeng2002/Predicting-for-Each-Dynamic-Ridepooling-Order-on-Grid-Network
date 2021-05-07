@@ -10,19 +10,23 @@
 
 #include <stdio.h>
 #include <vector>
+#include "Link.hpp"
 
 using std::pair;
+using std::vector;
 
 class OriginDestinationPair {
 private:
     pair<int, int> _origin;
     pair<int, int> _destination;
+//    vector<Link> links;
     double _lambda;
 public:
     OriginDestinationPair(pair<int, int> origin,
                           pair<int, int> destination,
                           double lambda); // initialize the pair
-    void ODPairPrint(); // print the pair
+    vector<Link> generateLinks(); // for each OD pair, generate the links traverse from O to D
+    void odPairPrint(); // print the pair
 };
 
 #endif /* OriginDestinationPair_hpp */

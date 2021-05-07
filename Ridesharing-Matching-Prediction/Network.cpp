@@ -15,7 +15,7 @@ Network::Network(int m, int n,
                  double speed)
 {
     network = vector<vector<int>>(m, vector<int>(n)); // initialize the network vector
-    size = pair<int, int>{m, n};
+    size = pair<int, int>{m, n}; // initialize the size of the network
     odPairs = vector<OriginDestinationPair>(); // initialize the od pairs vector
     _pickupTime = pickupTime; // initialize the pick up time avg{t^{pk}}
     _maxDetourTime = maxDetourTime; // initialize the max detour time avg{D}
@@ -59,11 +59,36 @@ void Network::generateSeakerStates()
     }
 }
 
+void Network::generateTakerStates()
+{
+    takerStates = vector<TakerState>();
+    for (int i = 0; i < odPairs.size(); i++) {
+        auto odLinks = odPairs.at(i).generateLinks();
+        for (int j = 0; j < odLinks.size(); j++) {
+            takerStates.push_back(TakerState(odLinks.at(j), odPairs.at(i)));
+        }
+    }
+}
+
 void Network::printPairs()
 {
     for (int i = 0; i < odPairs.size(); i++) {
         printf("The %dth pair: ", i + 1);
-        odPairs.at(i).ODPairPrint();
+        odPairs.at(i).odPairPrint();
+        printf("\n");
+    }
+}
+
+void Network::printStates()
+{
+    printf("The seaker states: \n");
+    for (int i = 0; i < seakerStates.size(); i++) {
+        seakerStates.at(i).printState();
+        printf("\n");
+    }
+    printf("The taker states: \n");
+    for (int i = 0; i < takerStates.size(); i++) {
+        takerStates.at(i).printState();
         printf("\n");
     }
 }

@@ -19,11 +19,13 @@ private:
     OriginDestinationPair _odPair;
 public:
     TakerState(Link link, OriginDestinationPair odPair); // initialize the taker state
+    void printState();
 };
 class SeakerState {
 private:
     OriginDestinationPair _odPair;
 public:
     SeakerState(OriginDestinationPair odPair); // initialize the seaker state
+    void printState();
 };
 #endif /* State_hpp */

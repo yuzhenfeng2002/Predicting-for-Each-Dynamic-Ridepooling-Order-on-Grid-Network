@@ -26,6 +26,7 @@ private:
     double _speed;
     vector<OriginDestinationPair> odPairs;
     vector<SeakerState> seakerStates;
+    vector<TakerState> takerStates;
     pair<int, int> positionIndexToPair(int randInt,
                                        int xmin, int ymin, int xmax, int ymax); // turn the generated rand int to position pair constained in a rectangle ranging from (xmin, ymin) to (xmax, ymax)
 public:
@@ -37,7 +38,9 @@ public:
     void generateODPairs(int number, double lambda,
                          int xmin, int ymin, int xmax, int ymax); // generate {number}s OD pairs and constain *destinations* in a rectangle ranging from (xmin, ymin) to (xmax, ymax)
     void generateSeakerStates();
+    void generateTakerStates();
     void printPairs(); // print all the pairs
+    void printStates();
 };
 
 #endif /* Network_hpp */

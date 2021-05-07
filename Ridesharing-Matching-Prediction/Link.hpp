@@ -9,13 +9,18 @@
 #define Link_hpp
 
 #include <stdio.h>
+#include <vector>
+
+using std::pair;
+
 class Link
 {
 private:
-    int _prevNode;
-    int _nextNode;
+    pair<int, int> _prevNode;
+    pair<int, int> _nextNode;
 public:
-    Link(int prevNode, int nextNode); // initialize the link
+    Link(pair<int, int> prevNode, pair<int, int> nextNode); // initialize the link
+    void linkPrint();
 };
 
 
