@@ -50,3 +50,20 @@ void Network::generateODPairs(int number, double lambda,
                            lambda));
     }
 }
+
+void Network::generateSeakerStates()
+{
+    seakerStates = vector<SeakerState>();
+    for (int i = 0; i < odPairs.size(); i++) {
+        seakerStates.push_back(SeakerState(odPairs.at(i)));
+    }
+}
+
+void Network::printPairs()
+{
+    for (int i = 0; i < odPairs.size(); i++) {
+        printf("The %dth pair: ", i + 1);
+        odPairs.at(i).ODPairPrint();
+        printf("\n");
+    }
+}

@@ -22,6 +22,7 @@ public:
     OriginDestinationPair(pair<int, int> origin,
                           pair<int, int> destination,
                           double lambda); // initialize the pair
+    void ODPairPrint(); // print the pair
 };
 
 #endif /* OriginDestinationPair_hpp */

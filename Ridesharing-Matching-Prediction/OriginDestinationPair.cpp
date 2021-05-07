@@ -15,3 +15,11 @@ OriginDestinationPair::OriginDestinationPair(pair<int, int> origin,
     _destination = destination;
     _lambda = lambda;
 }
+
+void OriginDestinationPair::ODPairPrint()
+{
+    printf("Origin: <%d, %d>\tDestination: <%d, %d>\tLambda: %.3f",
+           _origin.first, _origin.second,
+           _destination.first, _destination.second,
+           _lambda);
+}

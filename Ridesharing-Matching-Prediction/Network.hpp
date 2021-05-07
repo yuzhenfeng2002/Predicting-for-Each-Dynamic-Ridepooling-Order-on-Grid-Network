@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <vector>
 #include "OriginDestinationPair.hpp"
+#include "State.hpp"
 
 using std::vector;
 
@@ -24,6 +25,7 @@ private:
     double _searchRadius;
     double _speed;
     vector<OriginDestinationPair> odPairs;
+    vector<SeakerState> seakerStates;
     pair<int, int> positionIndexToPair(int randInt,
                                        int xmin, int ymin, int xmax, int ymax); // turn the generated rand int to position pair constained in a rectangle ranging from (xmin, ymin) to (xmax, ymax)
 public:
@@ -34,6 +36,8 @@ public:
             double speed); // initialize a m*n network
     void generateODPairs(int number, double lambda,
                          int xmin, int ymin, int xmax, int ymax); // generate {number}s OD pairs and constain *destinations* in a rectangle ranging from (xmin, ymin) to (xmax, ymax)
+    void generateSeakerStates();
+    void printPairs(); // print all the pairs
 };
 
 #endif /* Network_hpp */
