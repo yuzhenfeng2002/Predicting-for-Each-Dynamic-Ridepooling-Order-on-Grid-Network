@@ -9,10 +9,11 @@
 /* Begin PBXBuildFile section */
 		E31A2A2626438F6C00C076D8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A2526438F6C00C076D8 /* main.cpp */; };
 		E31A2A2F2643937600C076D8 /* OriginDestinationPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A2D2643937600C076D8 /* OriginDestinationPair.cpp */; };
-		E31A2A332643939100C076D8 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A312643939100C076D8 /* Network.cpp */; };
+		E31A2A332643939100C076D8 /* NetworkInitialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A312643939100C076D8 /* NetworkInitialize.cpp */; };
 		E31A2A6E2644CF5C00C076D8 /* Link.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A6C2644CF5C00C076D8 /* Link.cpp */; };
 		E31A2A722644D05800C076D8 /* State.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A702644D05800C076D8 /* State.cpp */; };
 		E31A2A77264531F900C076D8 /* Match.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A75264531F900C076D8 /* Match.cpp */; };
+		E31A2A9026481CB300C076D8 /* NetworkModelCalculate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A8F26481CB200C076D8 /* NetworkModelCalculate.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,7 +33,7 @@
 		E31A2A2526438F6C00C076D8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		E31A2A2D2643937600C076D8 /* OriginDestinationPair.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OriginDestinationPair.cpp; sourceTree = "<group>"; };
 		E31A2A2E2643937600C076D8 /* OriginDestinationPair.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OriginDestinationPair.hpp; sourceTree = "<group>"; };
-		E31A2A312643939100C076D8 /* Network.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
+		E31A2A312643939100C076D8 /* NetworkInitialize.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkInitialize.cpp; sourceTree = "<group>"; };
 		E31A2A322643939100C076D8 /* Network.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Network.hpp; sourceTree = "<group>"; };
 		E31A2A6C2644CF5C00C076D8 /* Link.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Link.cpp; sourceTree = "<group>"; };
 		E31A2A6D2644CF5C00C076D8 /* Link.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Link.hpp; sourceTree = "<group>"; };
@@ -40,6 +41,7 @@
 		E31A2A712644D05800C076D8 /* State.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = State.hpp; sourceTree = "<group>"; };
 		E31A2A75264531F900C076D8 /* Match.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Match.cpp; sourceTree = "<group>"; };
 		E31A2A76264531F900C076D8 /* Match.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Match.hpp; sourceTree = "<group>"; };
+		E31A2A8F26481CB200C076D8 /* NetworkModelCalculate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkModelCalculate.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +77,7 @@
 				E31A2A6C2644CF5C00C076D8 /* Link.cpp */,
 				E31A2A2526438F6C00C076D8 /* main.cpp */,
 				E31A2A75264531F900C076D8 /* Match.cpp */,
-				E31A2A312643939100C076D8 /* Network.cpp */,
+				E31A2A312643939100C076D8 /* NetworkInitialize.cpp */,
 				E31A2A2D2643937600C076D8 /* OriginDestinationPair.cpp */,
 				E31A2A702644D05800C076D8 /* State.cpp */,
 				E31A2A6D2644CF5C00C076D8 /* Link.hpp */,
@@ -83,6 +85,7 @@
 				E31A2A322643939100C076D8 /* Network.hpp */,
 				E31A2A2E2643937600C076D8 /* OriginDestinationPair.hpp */,
 				E31A2A712644D05800C076D8 /* State.hpp */,
+				E31A2A8F26481CB200C076D8 /* NetworkModelCalculate.cpp */,
 			);
 			path = "Ridesharing-Matching-Prediction";
 			sourceTree = "<group>";
@@ -145,10 +148,11 @@
 			files = (
 				E31A2A2F2643937600C076D8 /* OriginDestinationPair.cpp in Sources */,
 				E31A2A77264531F900C076D8 /* Match.cpp in Sources */,
-				E31A2A332643939100C076D8 /* Network.cpp in Sources */,
+				E31A2A332643939100C076D8 /* NetworkInitialize.cpp in Sources */,
 				E31A2A722644D05800C076D8 /* State.cpp in Sources */,
 				E31A2A2626438F6C00C076D8 /* main.cpp in Sources */,
 				E31A2A6E2644CF5C00C076D8 /* Link.cpp in Sources */,
+				E31A2A9026481CB300C076D8 /* NetworkModelCalculate.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

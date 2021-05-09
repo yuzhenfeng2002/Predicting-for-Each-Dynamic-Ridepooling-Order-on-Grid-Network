@@ -1,5 +1,5 @@
 //
-//  Network.cpp
+//  NetworkInitialize.cpp
 //  Ridesharing-Matching-Prediction
 //
 //  Created by YzFENG on 2021/5/6.
@@ -7,6 +7,7 @@
 
 #include "Network.hpp"
 #include <random>
+#include <algorithm>
 
 Network::Network(int m, int n,
                  double pickupTime,
@@ -32,6 +33,17 @@ pair<int, int> Network::positionIndexToPair(int randInt,
     return pair<int, int>{x, y};
 }
 
+void Network::sortSeekerTaker()
+{
+    for (int i = 0; i < seekerTaker.size(); i++) {
+//        sort(seekerTaker[i].begin(), seekerTaker[i].end(), compareMatchPriority);
+        sort(seekerTaker[i].begin(), seekerTaker[i].end(), [] (Match m1, Match m2)
+             {
+            return m1.getPriority() > m2.getPriority();
+        });
+    }
+}
+
 void Network::generateODPairs(int number, double lambda,
                      int xmin, int ymin, int xmax, int ymax)
 {
@@ -49,6 +61,9 @@ void Network::generateODPairs(int number, double lambda,
                                                xmin, ymin, xmax, ymax),
                            lambda));
     }
+    generateSeekerStates(); // generate all the seeker states
+    generateTakerStates(); // generate all the taker states
+    generateMatches();
 }
 
 void Network::generateSeekerStates()
@@ -73,8 +88,8 @@ void Network::generateTakerStates()
 void Network::generateMatches()
 {
     matches = vector<Match>();
-    seekerTaker = vector<vector<TakerState>>(seekerStates.size());
-    takerSeeker = vector<vector<SeekerState>>(takerStates.size());
+    seekerTaker = vector<vector<Match>>(seekerStates.size());
+    takerSeeker = vector<vector<Match>>(takerStates.size());
     for (int i = 0; i < seekerStates.size(); i++) {
         for (int j = 0; j < takerStates.size(); j++) {
             auto detourShareDistance =
@@ -82,18 +97,20 @@ void Network::generateMatches()
             auto pickupDistance = takerStates.at(j).currentDistanceCal(seekerStates.at(i));
             if (pickupDistance <= _searchRadius) {
                 if (std::get<1>(detourShareDistance) < _maxDetourTime * _speed) {
-                    matches.push_back(Match(seekerStates.at(i),
-                                            takerStates.at(j),
-                                            std::get<2>(detourShareDistance),
-                                            std::get<1>(detourShareDistance),
-                                            pickupDistance));
-                    seekerTaker.at(i).push_back(takerStates.at(j));
-                    takerSeeker.at(j).push_back(seekerStates.at(i));
+                    Match newMatch = Match(seekerStates.at(i),
+                                           takerStates.at(j),
+                                           i, j,
+                                           std::get<2>(detourShareDistance),
+                                           std::get<1>(detourShareDistance),
+                                           pickupDistance);
+                    matches.push_back(newMatch);
+                    seekerTaker.at(i).push_back(newMatch);
+                    takerSeeker.at(j).push_back(newMatch);
                 }
             }
         }
     }
-    
+    sortSeekerTaker();
 }
 
 void Network::printPairs()

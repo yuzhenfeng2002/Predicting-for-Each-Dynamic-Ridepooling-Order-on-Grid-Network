@@ -9,11 +9,12 @@
 
 void Match::priorityCal()
 {
-    const int w1 = 0.5, w2 = 0.3, w3 = 0.2; // the weight for detour, pick-up and shared distance
-    priority = w1 * _detourDistance + w2 * _pickupDistance + w3 * _sharedDistance;
+    const double w1 = 0.5, w2 = 0.3, w3 = 0.2; // the weight for detour, pick-up and shared distance
+    priority = - w1 * _detourDistance - w2 * _pickupDistance + w3 * _sharedDistance;
 }
 
 Match::Match(SeekerState seekerState, TakerState takerState,
+             int indexSeeker, int indexTaker,
              double sharedDistance,
              double detourDistance,
              double pickupDistance) : _seekerState(seekerState), _takerState(takerState)
@@ -21,7 +22,13 @@ Match::Match(SeekerState seekerState, TakerState takerState,
     _sharedDistance = sharedDistance;
     _detourDistance = detourDistance;
     _pickupDistance = pickupDistance;
+    indexOfSeekerAndTaker = pair<int, int>{indexSeeker, indexTaker};
     priorityCal();
+}
+
+double Match::getPriority()
+{
+    return priority;
 }
 
 void Match::print()
@@ -34,6 +41,6 @@ void Match::print()
     _seekerState.printState();
     printf("\n");
     printf("#Parameters:\n");
-    printf("Pick-up Distance: %f, Detour Distance: %f, Shared Distance: %f\n",
-           _pickupDistance, _detourDistance, _sharedDistance);
+    printf("Pick-up Distance: %f, Detour Distance: %f, Shared Distance: %f, Priority: %f\n",
+           _pickupDistance, _detourDistance, _sharedDistance, priority);
 }

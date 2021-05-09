@@ -16,6 +16,7 @@ private:
     SeekerState _seekerState; // the seeker of the match
     TakerState _takerState; // the taker of the match
     double priority; // the priority of the match
+    pair<int, int> indexOfSeekerAndTaker;
     
     double _sharedDistance;
     double _detourDistance;
@@ -24,9 +25,11 @@ private:
 
 public:
     Match(SeekerState seekerState, TakerState takerState,
+          int indexSeeker, int indexTaker,
           double sharedDistance,
           double detourDistance,
           double pickupDistance);
+    double getPriority();
     void print();
 };
 
