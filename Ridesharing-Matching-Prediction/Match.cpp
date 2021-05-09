@@ -13,11 +13,10 @@ void Match::priorityCal()
     priority = - w1 * _detourDistance - w2 * _pickupDistance + w3 * _sharedDistance;
 }
 
-Match::Match(SeekerState seekerState, TakerState takerState,
-             int indexSeeker, int indexTaker,
+Match::Match(int indexSeeker, int indexTaker,
              double sharedDistance,
              double detourDistance,
-             double pickupDistance) : _seekerState(seekerState), _takerState(takerState)
+             double pickupDistance)
 {
     _sharedDistance = sharedDistance;
     _detourDistance = detourDistance;
@@ -34,13 +33,8 @@ double Match::getPriority()
 void Match::print()
 {
     printf("----------------------------------------------------------\n");
-    printf("#Taker:\n");
-    _takerState.printState();
-    printf("\n");
-    printf("#Seeker:\n");
-    _seekerState.printState();
-    printf("\n");
+    printf("#Seeker: %d\n#Taker: %d\n", indexOfSeekerAndTaker.first, indexOfSeekerAndTaker.second);
     printf("#Parameters:\n");
-    printf("Pick-up Distance: %f, Detour Distance: %f, Shared Distance: %f, Priority: %f\n",
+    printf("Pick-up Distance: %f, Detour Distance: %f, Shared Distance: %f\nPriority: %f\n",
            _pickupDistance, _detourDistance, _sharedDistance, priority);
 }

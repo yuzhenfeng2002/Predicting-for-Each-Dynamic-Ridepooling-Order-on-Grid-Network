@@ -97,9 +97,7 @@ void Network::generateMatches()
             auto pickupDistance = takerStates.at(j).currentDistanceCal(seekerStates.at(i));
             if (pickupDistance <= _searchRadius) {
                 if (std::get<1>(detourShareDistance) < _maxDetourTime * _speed) {
-                    Match newMatch = Match(seekerStates.at(i),
-                                           takerStates.at(j),
-                                           i, j,
+                    Match newMatch = Match(i, j,
                                            std::get<2>(detourShareDistance),
                                            std::get<1>(detourShareDistance),
                                            pickupDistance);

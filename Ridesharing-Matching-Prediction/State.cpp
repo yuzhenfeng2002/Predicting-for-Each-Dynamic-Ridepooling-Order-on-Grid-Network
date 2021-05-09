@@ -62,3 +62,37 @@ tuple<bool, double, double> TakerState::detourShareDistanceCal(SeekerState seeke
     tuple<bool, double, double>{true, dFOFOMax, distanceBetweenNodes(seekerState.getODPair().getOrigin(), _odPair.getDestination())} :
     tuple<bool, double, double>{false, dFOLOMax, dSeekerFOLO};
 }
+
+double TakerState::getPTaker()
+{
+    return pTaker;
+}
+double TakerState::getRhoTaker()
+{
+    return rhoTaker;
+}
+double TakerState::getLambdaTaker()
+{
+    return lambdaTaker;
+}
+double SeekerState::getPSeeker()
+{
+    return pSeeker;
+}
+
+void TakerState::setPTaker(double p)
+{
+    pTaker = p;
+}
+void TakerState::setRhoTaker(double rho)
+{
+    rhoTaker = rho;
+}
+void TakerState::setLambdaTaker(double lambda)
+{
+    lambdaTaker = lambda;
+}
+void SeekerState::setPSeeker(double p)
+{
+    pSeeker = p;
+}

@@ -13,24 +13,21 @@
 
 class Match {
 private:
-    SeekerState _seekerState; // the seeker of the match
-    TakerState _takerState; // the taker of the match
+    pair<int, int> indexOfSeekerAndTaker; // the seeker's and taker's indices
     double priority; // the priority of the match
-    pair<int, int> indexOfSeekerAndTaker;
     
     double _sharedDistance;
     double _detourDistance;
     double _pickupDistance;
-    void priorityCal();
+    void priorityCal(); // calculate the priority, you can change the function to determine how to calculate it
 
 public:
-    Match(SeekerState seekerState, TakerState takerState,
-          int indexSeeker, int indexTaker,
+    Match(int indexSeeker, int indexTaker,
           double sharedDistance,
           double detourDistance,
-          double pickupDistance);
-    double getPriority();
-    void print();
+          double pickupDistance); // initialize the match
+    double getPriority(); // get priority
+    void print(); // print the match
 };
 
 #endif /* Match_hpp */

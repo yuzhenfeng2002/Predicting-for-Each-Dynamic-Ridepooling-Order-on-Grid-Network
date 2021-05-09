@@ -6,3 +6,8 @@
 //
 
 #include "Network.hpp"
+
+void Network::iteration()
+{
+    ;
+}
