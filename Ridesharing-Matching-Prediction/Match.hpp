@@ -13,19 +13,21 @@
 
 class Match {
 private:
-    SeakerState _seakerState; // the seeker of the match
+    SeekerState _seekerState; // the seeker of the match
     TakerState _takerState; // the taker of the match
     double priority; // the priority of the match
     
-    double sharedDistance;
-    double detourDistance;
-    double pickupDistance;
+    double _sharedDistance;
+    double _detourDistance;
+    double _pickupDistance;
+    void priorityCal();
 
 public:
-    Match(SeakerState seakerState, TakerState takerState,
+    Match(SeekerState seekerState, TakerState takerState,
           double sharedDistance,
           double detourDistance,
           double pickupDistance);
+    void print();
 };
 
 #endif /* Match_hpp */

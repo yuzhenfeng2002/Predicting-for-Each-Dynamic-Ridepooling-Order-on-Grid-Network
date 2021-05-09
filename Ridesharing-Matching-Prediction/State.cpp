@@ -7,7 +7,7 @@
 
 #include "State.hpp"
 
-SeakerState::SeakerState(OriginDestinationPair odPair) : _odPair(odPair)
+SeekerState::SeekerState(OriginDestinationPair odPair) : _odPair(odPair)
 {
     ;
 }
@@ -17,7 +17,7 @@ TakerState::TakerState(Link link, OriginDestinationPair odPair) : _link(link), _
     ;
 }
 
-void SeakerState::printState()
+void SeekerState::printState()
 {
     _odPair.odPairPrint();
 }
@@ -29,7 +29,7 @@ void TakerState::printState()
     _link.linkPrint();
 }
 
-OriginDestinationPair SeakerState::getODPair()
+OriginDestinationPair SeekerState::getODPair()
 {
     return _odPair;
 }
@@ -39,26 +39,26 @@ int TakerState::distanceBetweenNodes(pair<int, int> node1, pair<int, int> node2)
     return abs(node1.first - node2.first) + abs(node1.second - node2.second);
 }
 
-double TakerState::currentDistanceCal(SeakerState seakerState)
+double TakerState::currentDistanceCal(SeekerState seekerState)
 {
-    return _link.distanceToNode(seakerState.getODPair().getOrigin());
+    return _link.distanceToNode(seekerState.getODPair().getOrigin());
 }
 
-tuple<bool, double, double> TakerState::detourShareDistanceCal(SeakerState seakerState)
+tuple<bool, double, double> TakerState::detourShareDistanceCal(SeekerState seekerState)
 {
-    double dSeekerFOFO = distanceBetweenNodes(seakerState.getODPair().getOrigin(), _odPair.getDestination()) +
-    distanceBetweenNodes(_odPair.getDestination(), seakerState.getODPair().getDestination());
-    double dTakerFOFO = _link.distanceToNode(_odPair.getOrigin()) + currentDistanceCal(seakerState) + dSeekerFOFO -
-    distanceBetweenNodes(_odPair.getDestination(), seakerState.getODPair().getDestination());
-    double dSeekerFOLO = distanceBetweenNodes(seakerState.getODPair().getOrigin(), seakerState.getODPair().getDestination());
-    double dTakerFOLO = _link.distanceToNode(_odPair.getOrigin()) + currentDistanceCal(seakerState) + dSeekerFOLO +
-    distanceBetweenNodes(_odPair.getDestination(), seakerState.getODPair().getDestination());
+    double dSeekerFOFO = distanceBetweenNodes(seekerState.getODPair().getOrigin(), _odPair.getDestination()) +
+    distanceBetweenNodes(_odPair.getDestination(), seekerState.getODPair().getDestination());
+    double dTakerFOFO = _link.distanceToNode(_odPair.getOrigin()) + currentDistanceCal(seekerState) + dSeekerFOFO -
+    distanceBetweenNodes(_odPair.getDestination(), seekerState.getODPair().getDestination());
+    double dSeekerFOLO = distanceBetweenNodes(seekerState.getODPair().getOrigin(), seekerState.getODPair().getDestination());
+    double dTakerFOLO = _link.distanceToNode(_odPair.getOrigin()) + currentDistanceCal(seekerState) + dSeekerFOLO +
+    distanceBetweenNodes(_odPair.getDestination(), seekerState.getODPair().getDestination());
     double dSeeker = dSeekerFOLO;
     double dTaker = distanceBetweenNodes(_odPair.getOrigin(), _odPair.getDestination());
     
     double dFOFOMax = (dSeekerFOFO - dSeeker) > (dTakerFOFO - dTaker)? (dSeekerFOFO - dSeeker) : (dTakerFOFO - dTaker);
     double dFOLOMax = (dSeekerFOLO - dSeeker) > (dTakerFOLO - dTaker)? (dSeekerFOLO - dSeeker) : (dTakerFOLO - dTaker);
     return dFOFOMax < dFOLOMax ?
-    tuple<bool, double, double>{true, dFOFOMax, distanceBetweenNodes(seakerState.getODPair().getOrigin(), _odPair.getDestination())} :
+    tuple<bool, double, double>{true, dFOFOMax, distanceBetweenNodes(seekerState.getODPair().getOrigin(), _odPair.getDestination())} :
     tuple<bool, double, double>{false, dFOLOMax, dSeekerFOLO};
 }

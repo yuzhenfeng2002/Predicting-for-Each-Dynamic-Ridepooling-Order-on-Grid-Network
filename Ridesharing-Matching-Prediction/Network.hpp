@@ -12,6 +12,7 @@
 #include <vector>
 #include "OriginDestinationPair.hpp"
 #include "State.hpp"
+#include "Match.hpp"
 
 using std::vector;
 
@@ -25,8 +26,11 @@ private:
     double _searchRadius;
     double _speed;
     vector<OriginDestinationPair> odPairs;
-    vector<SeakerState> seakerStates;
+    vector<SeekerState> seekerStates;
     vector<TakerState> takerStates;
+    vector<vector<TakerState>> seekerTaker;
+    vector<vector<SeekerState>> takerSeeker;
+    vector<Match> matches;
     pair<int, int> positionIndexToPair(int randInt,
                                        int xmin, int ymin, int xmax, int ymax); // turn the generated rand int to position pair constained in a rectangle ranging from (xmin, ymin) to (xmax, ymax)
 public:
@@ -37,10 +41,12 @@ public:
             double speed); // initialize a m*n network
     void generateODPairs(int number, double lambda,
                          int xmin, int ymin, int xmax, int ymax); // generate {number}s OD pairs and constain *destinations* in a rectangle ranging from (xmin, ymin) to (xmax, ymax)
-    void generateSeakerStates(); // generate all the seeker states
+    void generateSeekerStates(); // generate all the seeker states
     void generateTakerStates(); // generate all the taker states
+    void generateMatches();
     void printPairs(); // print all the pairs
     void printStates(); // print all the seeker and taker states
+    void printMatches();
 };
 
 #endif /* Network_hpp */

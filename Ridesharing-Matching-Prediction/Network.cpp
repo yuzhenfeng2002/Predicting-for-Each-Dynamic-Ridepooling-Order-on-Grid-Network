@@ -51,11 +51,11 @@ void Network::generateODPairs(int number, double lambda,
     }
 }
 
-void Network::generateSeakerStates()
+void Network::generateSeekerStates()
 {
-    seakerStates = vector<SeakerState>();
+    seekerStates = vector<SeekerState>();
     for (int i = 0; i < odPairs.size(); i++) {
-        seakerStates.push_back(SeakerState(odPairs.at(i)));
+        seekerStates.push_back(SeekerState(odPairs.at(i)));
     }
 }
 
@@ -70,6 +70,32 @@ void Network::generateTakerStates()
     }
 }
 
+void Network::generateMatches()
+{
+    matches = vector<Match>();
+    seekerTaker = vector<vector<TakerState>>(seekerStates.size());
+    takerSeeker = vector<vector<SeekerState>>(takerStates.size());
+    for (int i = 0; i < seekerStates.size(); i++) {
+        for (int j = 0; j < takerStates.size(); j++) {
+            auto detourShareDistance =
+            takerStates.at(j).detourShareDistanceCal(seekerStates.at(i));
+            auto pickupDistance = takerStates.at(j).currentDistanceCal(seekerStates.at(i));
+            if (pickupDistance <= _searchRadius) {
+                if (std::get<1>(detourShareDistance) < _maxDetourTime * _speed) {
+                    matches.push_back(Match(seekerStates.at(i),
+                                            takerStates.at(j),
+                                            std::get<2>(detourShareDistance),
+                                            std::get<1>(detourShareDistance),
+                                            pickupDistance));
+                    seekerTaker.at(i).push_back(takerStates.at(j));
+                    takerSeeker.at(j).push_back(seekerStates.at(i));
+                }
+            }
+        }
+    }
+    
+}
+
 void Network::printPairs()
 {
     for (int i = 0; i < odPairs.size(); i++) {
@@ -81,14 +107,21 @@ void Network::printPairs()
 
 void Network::printStates()
 {
-    printf("The seaker states: \n");
-    for (int i = 0; i < seakerStates.size(); i++) {
-        seakerStates.at(i).printState();
+    printf("The seeker states: \n");
+    for (int i = 0; i < seekerStates.size(); i++) {
+        seekerStates.at(i).printState();
         printf("\n");
     }
     printf("The taker states: \n");
     for (int i = 0; i < takerStates.size(); i++) {
         takerStates.at(i).printState();
         printf("\n");
+    }
+}
+
+void Network::printMatches()
+{
+    for (int i = 0; i < matches.size(); i++) {
+        matches.at(i).print();
     }
 }
