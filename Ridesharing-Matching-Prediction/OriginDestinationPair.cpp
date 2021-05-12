@@ -59,6 +59,11 @@ pair<int, int> OriginDestinationPair::getDestination()
     return _destination;
 }
 
+double OriginDestinationPair::getLambda()
+{
+    return _lambda;
+}
+
 void OriginDestinationPair::odPairPrint()
 {
     printf("Origin: <%d, %d>\tDestination: <%d, %d>\tLambda: %.3f",

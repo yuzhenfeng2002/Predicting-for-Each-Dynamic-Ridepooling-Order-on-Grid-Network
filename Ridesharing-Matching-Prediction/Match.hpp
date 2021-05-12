@@ -13,7 +13,7 @@
 
 class Match {
 private:
-    pair<int, int> indexOfSeekerAndTaker; // the seeker's and taker's indices
+    tuple<int, int, int> indexOfSeekerAndTaker; // the seeker's and taker's indices
     double priority; // the priority of the match
     
     double _sharedDistance;
@@ -22,11 +22,12 @@ private:
     void priorityCal(); // calculate the priority, you can change the function to determine how to calculate it
 
 public:
-    Match(int indexSeeker, int indexTaker,
+    Match(int indexSeeker, int indexTakerOD, int indexTaker,
           double sharedDistance,
           double detourDistance,
           double pickupDistance); // initialize the match
     double getPriority(); // get priority
+    tuple<int, int, int> getIndexOfSeekerAndTaker();
     void print(); // print the match
 };
 

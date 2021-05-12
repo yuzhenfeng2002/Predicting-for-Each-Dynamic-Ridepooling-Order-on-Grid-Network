@@ -27,7 +27,7 @@ private:
     double _speed;
     vector<OriginDestinationPair> odPairs;
     vector<SeekerState> seekerStates;
-    vector<TakerState> takerStates;
+    vector<vector<TakerState>> takerStates;
     vector<vector<Match>> seekerTaker;
     vector<vector<Match>> takerSeeker;
     vector<Match> matches;

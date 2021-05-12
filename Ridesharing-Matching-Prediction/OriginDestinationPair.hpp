@@ -27,6 +27,7 @@ public:
     vector<Link> generateLinks(); // for each OD pair, generate the links traverse from O to D
     pair<int, int> getOrigin();
     pair<int, int> getDestination();
+    double getLambda();
     void odPairPrint(); // print the pair
 };
 

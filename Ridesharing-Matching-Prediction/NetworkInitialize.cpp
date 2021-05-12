@@ -76,11 +76,11 @@ void Network::generateSeekerStates()
 
 void Network::generateTakerStates()
 {
-    takerStates = vector<TakerState>();
+    takerStates = vector<vector<TakerState>>(odPairs.size());
     for (int i = 0; i < odPairs.size(); i++) {
         auto odLinks = odPairs.at(i).generateLinks();
         for (int j = 0; j < odLinks.size(); j++) {
-            takerStates.push_back(TakerState(odLinks.at(j), odPairs.at(i)));
+            takerStates[i].push_back(TakerState(odLinks.at(j), odPairs.at(i)));
         }
     }
 }
@@ -92,18 +92,20 @@ void Network::generateMatches()
     takerSeeker = vector<vector<Match>>(takerStates.size());
     for (int i = 0; i < seekerStates.size(); i++) {
         for (int j = 0; j < takerStates.size(); j++) {
-            auto detourShareDistance =
-            takerStates.at(j).detourShareDistanceCal(seekerStates.at(i));
-            auto pickupDistance = takerStates.at(j).currentDistanceCal(seekerStates.at(i));
-            if (pickupDistance <= _searchRadius) {
-                if (std::get<1>(detourShareDistance) < _maxDetourTime * _speed) {
-                    Match newMatch = Match(i, j,
-                                           std::get<2>(detourShareDistance),
-                                           std::get<1>(detourShareDistance),
-                                           pickupDistance);
-                    matches.push_back(newMatch);
-                    seekerTaker.at(i).push_back(newMatch);
-                    takerSeeker.at(j).push_back(newMatch);
+            for (int k = 0; k < takerStates[j].size(); k++) {
+                auto detourShareDistance =
+                takerStates.at(j).at(k).detourShareDistanceCal(seekerStates.at(i));
+                auto pickupDistance = takerStates.at(j).at(k).currentDistanceCal(seekerStates.at(i));
+                if (pickupDistance <= _searchRadius) {
+                    if (std::get<1>(detourShareDistance) < _maxDetourTime * _speed) {
+                        Match newMatch = Match(i, j, k,
+                                               std::get<2>(detourShareDistance),
+                                               std::get<1>(detourShareDistance),
+                                               pickupDistance);
+                        matches.push_back(newMatch);
+                        seekerTaker.at(i).push_back(newMatch);
+                        takerSeeker.at(j).push_back(newMatch);
+                    }
                 }
             }
         }
@@ -129,14 +131,19 @@ void Network::printStates()
     }
     printf("The taker states: \n");
     for (int i = 0; i < takerStates.size(); i++) {
-        takerStates.at(i).printState();
-        printf("\n");
+        printf("The %dth OD pair: \n", i);
+        for (int j = 0; j < takerStates.at(i).size(); j++) {
+            takerStates.at(i).at(j).printState();
+            printf("\n");
+        }
     }
 }
 
 void Network::printMatches()
 {
-    for (int i = 0; i < matches.size(); i++) {
-        matches.at(i).print();
+    for (int i = 0; i < seekerTaker.size(); i++) {
+        for (int j = 0; j < seekerTaker.at(i).size(); j++) {
+            seekerTaker.at(i).at(j).print();
+        }
     }
 }

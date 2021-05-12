@@ -13,7 +13,7 @@ void Match::priorityCal()
     priority = - w1 * _detourDistance - w2 * _pickupDistance + w3 * _sharedDistance;
 }
 
-Match::Match(int indexSeeker, int indexTaker,
+Match::Match(int indexSeeker, int indexTakerOD, int indexTaker,
              double sharedDistance,
              double detourDistance,
              double pickupDistance)
@@ -21,7 +21,7 @@ Match::Match(int indexSeeker, int indexTaker,
     _sharedDistance = sharedDistance;
     _detourDistance = detourDistance;
     _pickupDistance = pickupDistance;
-    indexOfSeekerAndTaker = pair<int, int>{indexSeeker, indexTaker};
+    indexOfSeekerAndTaker = tuple<int, int, int>{indexSeeker, indexTakerOD, indexTaker};
     priorityCal();
 }
 
@@ -30,10 +30,15 @@ double Match::getPriority()
     return priority;
 }
 
+tuple<int, int, int> Match::getIndexOfSeekerAndTaker()
+{
+    return indexOfSeekerAndTaker;
+}
+
 void Match::print()
 {
     printf("----------------------------------------------------------\n");
-    printf("#Seeker: %d\n#Taker: %d\n", indexOfSeekerAndTaker.first, indexOfSeekerAndTaker.second);
+    printf("#Seeker's OD: %d\n#Taker's OD: %d\n#Taker: %d\n", std::get<0>(indexOfSeekerAndTaker), std::get<1>(indexOfSeekerAndTaker), std::get<2>(indexOfSeekerAndTaker));
     printf("#Parameters:\n");
     printf("Pick-up Distance: %f, Detour Distance: %f, Shared Distance: %f\nPriority: %f\n",
            _pickupDistance, _detourDistance, _sharedDistance, priority);
