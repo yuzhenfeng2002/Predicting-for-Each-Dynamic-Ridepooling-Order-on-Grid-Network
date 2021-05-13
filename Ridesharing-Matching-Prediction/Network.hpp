@@ -19,18 +19,18 @@ using std::vector;
 class Network
 {
 private:
-    vector<vector<int>> network;
-    pair<int, int> size;
+    vector<vector<int>> network; // the network
+    pair<int, int> size; // the size of the network
     double _pickupTime;
     double _maxDetourTime;
     double _searchRadius;
-    double _speed;
+    double _speed; // the speed of the vehicle
     vector<OriginDestinationPair> odPairs;
-    vector<SeekerState> seekerStates;
-    vector<vector<TakerState>> takerStates;
-    vector<vector<Match>> seekerTaker;
-    vector<vector<Match>> takerSeeker;
-    vector<Match> matches;
+    vector<SeekerState> seekerStates; // S
+    vector<vector<TakerState>> takerStates; // T
+    vector<vector<Match>> seekerTaker; // T_{S(w)}
+    vector<vector<Match>> takerSeeker; // S_{T(a, w)}
+    vector<Match> matches; // M
     
     
 
@@ -53,7 +53,7 @@ public:
     void printPairs(); // print all the pairs
     void printStates(); // print all the seeker and taker states
     void printMatches(); // print all the matches
-    void iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime = -1);
+    void iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime = -1); // iterate until |X_{k+1} - X_{k}| < epsilon
 };
 
 #endif /* Network_hpp */

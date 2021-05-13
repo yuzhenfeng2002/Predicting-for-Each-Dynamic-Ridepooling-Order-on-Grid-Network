@@ -11,7 +11,7 @@ Link::Link(pair<int, int> prevNode, pair<int, int> nextNode)
 {
     _prevNode = prevNode;
     _nextNode = nextNode;
-    length = abs(_nextNode.first - _prevNode.first) + abs(_nextNode.second - _prevNode.second);
+    length = abs(_nextNode.first - _prevNode.first) + abs(_nextNode.second - _prevNode.second); // cal the length of the link
 }
 
 void Link::linkPrint()

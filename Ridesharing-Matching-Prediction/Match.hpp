@@ -13,7 +13,7 @@
 
 class Match {
 private:
-    tuple<int, int, int> indexOfSeekerAndTaker; // the seeker's and taker's indices
+    tuple<int, int, int> indexOfSeekerAndTaker; // the seeker's index, taker's OD index and the taker's index
     double priority; // the priority of the match
     
     double _sharedDistance;
@@ -27,7 +27,7 @@ public:
           double detourDistance,
           double pickupDistance); // initialize the match
     double getPriority(); // get priority
-    tuple<int, int, int> getIndexOfSeekerAndTaker();
+    tuple<int, int, int> getIndexOfSeekerAndTaker(); // get the IndexOfSeekerAndTaker
     void print(); // print the match
 };
 

@@ -36,10 +36,9 @@ pair<int, int> Network::positionIndexToPair(int randInt,
 void Network::sortSeekerTaker()
 {
     for (int i = 0; i < seekerTaker.size(); i++) {
-//        sort(seekerTaker[i].begin(), seekerTaker[i].end(), compareMatchPriority);
         sort(seekerTaker[i].begin(), seekerTaker[i].end(), [] (Match m1, Match m2)
              {
-            return m1.getPriority() > m2.getPriority();
+            return m1.getPriority() > m2.getPriority(); // sort by the priority from larger match to smaller match
         });
     }
 }
@@ -63,7 +62,8 @@ void Network::generateODPairs(int number, double lambda,
     }
     generateSeekerStates(); // generate all the seeker states
     generateTakerStates(); // generate all the taker states
-    generateMatches();
+    generateMatches(); // generate all the matches
+    // note that when there are several groups of OD pairs, these three functions needs to be called after all the OD pairs are generated
 }
 
 void Network::generateSeekerStates()
