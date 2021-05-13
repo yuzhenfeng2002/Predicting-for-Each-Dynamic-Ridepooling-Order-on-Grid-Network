@@ -18,9 +18,11 @@ class Link
 private:
     pair<int, int> _prevNode; // the link's previous node
     pair<int, int> _nextNode; // the link's next node
+    double length;
 public:
     Link(pair<int, int> prevNode, pair<int, int> nextNode); // initialize the link
     double distanceToNode(pair<int, int> node); // calculate the distance from the link to a node(approximately)
+    double getLength();
     void linkPrint(); // print the link
 };
 

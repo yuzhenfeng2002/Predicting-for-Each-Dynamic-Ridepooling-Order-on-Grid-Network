@@ -80,7 +80,7 @@ void Network::generateTakerStates()
     for (int i = 0; i < odPairs.size(); i++) {
         auto odLinks = odPairs.at(i).generateLinks();
         for (int j = 0; j < odLinks.size(); j++) {
-            takerStates[i].push_back(TakerState(odLinks.at(j), odPairs.at(i)));
+            takerStates[i].push_back(TakerState(odLinks.at(j), odPairs.at(i), _speed, _pickupTime));
         }
     }
 }

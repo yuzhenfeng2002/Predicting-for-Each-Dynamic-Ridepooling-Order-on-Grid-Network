@@ -36,18 +36,23 @@ private:
     double pTaker = 0.5;
     double rhoTaker = 0.5;
     double lambdaTaker = 0;
+    double etaTaker = 0;
+    double timeLength;
     int distanceBetweenNodes(pair<int, int> node1, pair<int, int> node2); // calculate the distance between two nodes
 public:
-    TakerState(Link link, OriginDestinationPair odPair); // initialize the taker state
+    TakerState(Link link, OriginDestinationPair odPair, double speed, double pickupTime); // initialize the taker state
     double currentDistanceCal(SeekerState seekerState); // calculate the current distance between the taker and the seeker, namely pick-up distance
     tuple<bool, double, double> detourShareDistanceCal(SeekerState seekerState); // return(isFOFO, detour distance, share distance)
     void printState();
     
     void setPTaker(double p);
     double getPTaker();
-    void setRhoTaker(double p);
+    void setRhoTaker(double rho);
     double getRhoTaker();
-    void setLambdaTaker(double p);
+    void setLambdaTaker(double lambda);
     double getLambdaTaker();
+    void setEtaTaker(double eta);
+    double getEtaTaker();
+    double getTimeLength();
 };
 #endif /* State_hpp */

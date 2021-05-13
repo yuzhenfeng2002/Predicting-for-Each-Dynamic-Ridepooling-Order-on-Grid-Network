@@ -11,11 +11,17 @@ Link::Link(pair<int, int> prevNode, pair<int, int> nextNode)
 {
     _prevNode = prevNode;
     _nextNode = nextNode;
+    length = abs(_nextNode.first - _prevNode.first) + abs(_nextNode.second - _prevNode.second);
 }
 
 void Link::linkPrint()
 {
     printf("<%d, %d> -> <%d, %d>", _prevNode.first, _prevNode.second, _nextNode.first, _nextNode.second);
+}
+
+double Link::getLength()
+{
+    return length;
 }
 
 double Link::distanceToNode(pair<int, int> node)
