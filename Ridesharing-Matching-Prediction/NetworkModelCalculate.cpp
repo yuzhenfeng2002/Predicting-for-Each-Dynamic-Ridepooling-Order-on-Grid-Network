@@ -110,6 +110,7 @@ tuple<double, double, double, double> Network::iterationStep()
 void Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime)
 {
     int time = 0;
+    bool willContinue = true;
     double lambdaStep, rhoTakerStep, pTakerStep, pSeekerStep;
     do {
         auto iterationResult = iterationStep();
@@ -124,9 +125,20 @@ void Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int ite
         printf("rhoTakerStep = %f\n", rhoTakerStep);
         printf("pTakerStep = %f\n", pTakerStep);
         printf("pSeekerStep = %f\n", pSeekerStep);
-    } while (time != iterationTime ||
-             lambdaStep > lambdaEpsilon ||
+        if (iterationTime == -1) {
+            willContinue = true;
+        }
+        else if (time < iterationTime)
+        {
+            willContinue = true;
+        }
+        else
+        {
+            willContinue = false;
+        }
+    } while (willContinue &&
+             (lambdaStep > lambdaEpsilon ||
              rhoTakerStep > probabilityEpsilon ||
              pTakerStep > probabilityEpsilon ||
-             pSeekerStep > probabilityEpsilon);
+             pSeekerStep > probabilityEpsilon));
 }

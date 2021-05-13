@@ -6,6 +6,7 @@
 //
 
 #include <iostream>
+#include <ctime>
 #include "Network.hpp"
 
 int main(int argc, const char * argv[]) {
@@ -20,7 +21,9 @@ int main(int argc, const char * argv[]) {
 //    network.printMatches();
 //    network.printPairs();
 //    network.printStates();
-    network.iteration(0.05, 0.005, 10);
-    std::cout << "Hello, World!\n";
+    clock_t begin = clock();
+    network.iteration(0.05, 0.005, 5);
+    clock_t end = clock();
+    std::cout << "The runtime is: " << end - begin << " us\n";
     return 0;
 }
