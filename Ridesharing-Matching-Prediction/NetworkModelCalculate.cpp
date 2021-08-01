@@ -42,7 +42,7 @@ tuple<double, double, double, double> Network::iterationStep()
                 auto index = seekerTaker.at(i).at(j).getIndexOfSeekerAndTaker();
                 int indexOD = std::get<1>(index);
                 int indexTaker = std::get<2>(index);
-                multiplyResult *= takerStates.at(indexOD).at(indexTaker).getRhoTaker();
+                multiplyResult *= 1 - takerStates.at(indexOD).at(indexTaker).getRhoTaker();
             }
             pSeeker = 1 - multiplyResult;
         }
