@@ -1,5 +1,6 @@
 import csv
 import pandas as pd
+import pickle
 from geopy.distance import geodesic
 
 
@@ -41,6 +42,8 @@ def find_scc(adj_list: dict):
     scc = {}
     node_scc = {}
     for key, item in adj_list.items():
+        if key == 58:
+            a = 1
         if key not in node_scc:
             node_scc[key] = len(scc)
             scc[len(scc)] = item
@@ -52,13 +55,18 @@ def find_scc(adj_list: dict):
     return scc, node_scc
 
 
-def simplify_node(old_node_file: str, new_node_file, scc: dict, node_scc: dict):
+def simplify_node(old_node_file: str, new_node_file: str,
+                  new_node_binary_file: str, old_new_map_binary_file: str,
+                  scc: dict, node_scc: dict, save_to_file=False):
     """
     To simplify nodes by combine sccs
     :param old_node_file: the address of initial node file
     :param new_node_file: the address of combined node file
+    :param new_node_binary_file: the address of combined node binary file
+    :param old_new_map_binary_file: the address of map between old and new binary file
     :param scc: scc and nodes contained
     :param node_scc: the map between index of node and scc
+    :param save_to_file: choose whether to save these data to file
     :return: (a list of new nodes, the map between new and old nodes, a dict of old nodes)
     """
     old_node_data = {}
@@ -84,32 +92,45 @@ def simplify_node(old_node_file: str, new_node_file, scc: dict, node_scc: dict):
             if key not in old_new_map_dict:
                 scc_idx = node_scc[key]
                 node_of_scc = scc[scc_idx]
-                x = y = 0
+                x = old_node_data[key][0]
+                y = old_node_data[key][1]
+                old_new_map_dict[key] = len(new_node_data)
                 for node in node_of_scc:
                     node_idx = node[1]
                     x += old_node_data[node_idx][0]
                     y += old_node_data[node_idx][1]
                     old_new_map_dict[node_idx] = len(new_node_data)
-                x /= len(node_of_scc)
-                y /= len(node_of_scc)
+                x /= (len(node_of_scc) + 1)
+                y /= (len(node_of_scc) + 1)
                 new_node_data.append((len(new_node_data), x, y))
     print("The number of nodes has decreased from {0} to {1}".format(len(old_node_data), len(new_node_data)))
+
+    if not save_to_file:
+        return new_node_data, old_new_map_dict, old_node_data
+    # save data to file
     f = open(new_node_file, encoding="gbk", mode="w")
     data = list(map(lambda i: str(i)[1:-1] + '\n', new_node_data))
     f.write("node_id,x_coord,y_coord\n")
     f.writelines(data)
     f.close()
+    f = open(new_node_binary_file, mode="wb")
+    pickle.dump(new_node_data, f)
+    f.close()
+    f = open(old_new_map_binary_file, mode="wb")
+    pickle.dump(old_new_map_dict, f)
+    f.close()
     return new_node_data, old_new_map_dict, old_node_data
 
 
 def simplify_link(old_link_file: str, new_link_file: str,
-                  new_node_data: list, old_new_map_dict: dict):
+                  new_node_data: list, old_new_map_dict: dict, save_to_file=False):
     """
     To simplify links by combine short links
     :param old_link_file: the address of initial link file
     :param new_link_file: the address of combined link file
     :param new_node_data: a list of combined nodes
-    :param old_new_map_dict:
+    :param old_new_map_dict: the map between new and old nodes
+    :param save_to_file: choose whether to save these data to file
     :return: the map between new and old nodes
     """
     new_link_data = []
@@ -148,6 +169,10 @@ def simplify_link(old_link_file: str, new_link_file: str,
             if from_node_id != to_node_id:
                 new_link_data.append((from_node_id, to_node_id, length, geometry))
     print("The number of links has decreased from {0} to {1}".format(old_link_num, len(new_link_data)))
+
+    if not save_to_file:
+        return new_link_data
+    # save to file
     heading = ["from_node_id", "to_node_id", "length", "geometry"]
     csv_data = list(map(list, new_link_data))
     f_csv = pd.DataFrame(data=csv_data, columns=heading)
