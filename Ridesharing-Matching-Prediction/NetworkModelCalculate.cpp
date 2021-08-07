@@ -77,26 +77,23 @@ tuple<double, double, double, double> Network::iterationStep()
         }
     }
     
-    for (int i = 0; i < seekerTaker.size(); i++) {
-        for (int j = int(seekerTaker.at(i).size()) - 1; j >= 0; j--) {
-            auto index = seekerTaker.at(i).at(j).getIndexOfSeekerAndTaker();
-            int indexOD = std::get<1>(index);
-            int indexTaker = std::get<2>(index);
+    for (int i = 0; i < takerStates.size(); i++) {
+        for (int j = 0; j < takerStates.at(i).size(); j++) {
             double rhoTaker;
-            if (takerStates.at(indexOD).at(indexTaker).getEtaTaker() == 0) {
-                rhoTaker = takerStates.at(indexOD).at(indexTaker).getLambdaTaker() *
-                takerStates.at(indexOD).at(indexTaker).getTimeLength();
+            if (takerStates.at(i).at(j).getEtaTaker() == 0) {
+                rhoTaker = takerStates.at(i).at(j).getLambdaTaker() *
+                takerStates.at(i).at(j).getTimeLength();
             }
             else
             {
                 rhoTaker = 1 - exp(
-                                   -takerStates.at(indexOD).at(indexTaker).getEtaTaker() *
-                                   takerStates.at(indexOD).at(indexTaker).getTimeLength());
-                rhoTaker = rhoTaker * takerStates.at(indexOD).at(indexTaker).getLambdaTaker() /
-                takerStates.at(indexOD).at(indexTaker).getEtaTaker();
+                                   -takerStates.at(i).at(j).getEtaTaker() *
+                                   takerStates.at(i).at(j).getTimeLength());
+                rhoTaker = rhoTaker * takerStates.at(i).at(j).getLambdaTaker() /
+                takerStates.at(i).at(j).getEtaTaker();
             }
-            rhoTakerStep.push_back(abs(takerStates.at(indexOD).at(indexTaker).getRhoTaker() - rhoTaker));
-            takerStates.at(indexOD).at(indexTaker).setRhoTaker(rhoTaker);
+            rhoTakerStep.push_back(abs(takerStates.at(i).at(j).getRhoTaker() - rhoTaker));
+            takerStates.at(i).at(j).setRhoTaker(rhoTaker);
         }
     }
     
@@ -107,7 +104,15 @@ tuple<double, double, double, double> Network::iterationStep()
         *std::max_element(pSeekerStep.begin(), pSeekerStep.end())};
 }
 
-void Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime)
+void Network::generateVariables()
+{
+    generateSeekerStates(); // generate all the seeker states
+    generateTakerStates(); // generate all the taker states
+    generateMatches(); // generate all the matches
+    // note that when there are several groups of OD pairs, these three functions needs to be called after all the OD pairs are generated
+}
+
+int Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime)
 {
     int time = 0;
     bool willContinue = true;
@@ -119,12 +124,12 @@ void Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int ite
         pTakerStep = std::get<2>(iterationResult);
         pSeekerStep = std::get<3>(iterationResult);
         time ++;
-        printf("------------------------\n");
-        printf("The %dth time iteration:\n", time);
-        printf("lambdaStep = %f\n", lambdaStep);
-        printf("rhoTakerStep = %f\n", rhoTakerStep);
-        printf("pTakerStep = %f\n", pTakerStep);
-        printf("pSeekerStep = %f\n", pSeekerStep);
+//        printf("------------------------\n");
+//        printf("The %dth time iteration:\n", time);
+//        printf("lambdaStep = %f\n", lambdaStep);
+//        printf("rhoTakerStep = %f\n", rhoTakerStep);
+//        printf("pTakerStep = %f\n", pTakerStep);
+//        printf("pSeekerStep = %f\n", pSeekerStep);
         if (iterationTime == -1) {
             willContinue = true;
         }
@@ -141,4 +146,24 @@ void Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int ite
              rhoTakerStep > probabilityEpsilon ||
              pTakerStep > probabilityEpsilon ||
              pSeekerStep > probabilityEpsilon));
+    return time;
+}
+
+void Network::printResults()
+{
+    printf("The result of the model is: \n");
+    
+    printf("The size of the network is %d * %d. \n", size.first, size.second);
+    printf("The speed, pick-up time, maximum detour time and search radius of the network is %.1f, %.1f, %.1f, %.1f. \n",
+           _speed, _pickupTime, _maxDetourTime, _searchRadius);
+    
+    printf("There are %lu numbers of OD pairs. \n", odPairs.size());
+    
+    int sum = 0;
+    for (int i = 0; i < takerStates.size(); i++) {
+        sum += takerStates.at(i).size();
+    }
+    
+    printf("There are %d numbers of taker states. \n", sum);
+    printf("There are %lu numbers of matches. \n", matches.size());
 }

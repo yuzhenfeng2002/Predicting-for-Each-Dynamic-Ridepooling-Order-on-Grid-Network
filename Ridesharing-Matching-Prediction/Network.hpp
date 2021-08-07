@@ -10,16 +10,19 @@
 
 #include <stdio.h>
 #include <vector>
+#include <string>
+#include <fstream>
 #include "OriginDestinationPair.hpp"
 #include "State.hpp"
 #include "Match.hpp"
 
 using std::vector;
+using std::string;
+using std::ofstream;
 
 class Network
 {
 private:
-    vector<vector<int>> network; // the network
     pair<int, int> size; // the size of the network
     double _pickupTime;
     double _maxDetourTime;
@@ -31,7 +34,6 @@ private:
     vector<vector<Match>> seekerTaker; // T_{S(w)}
     vector<vector<Match>> takerSeeker; // S_{T(a, w)}
     vector<Match> matches; // M
-    
     
 
     void sortSeekerTaker(); // sort the match of a seeker according to its priority
@@ -50,10 +52,12 @@ public:
     void generateODPairs(int number, double lambda,
                          int xmin, int ymin, int xmax, int ymax); // generate {number}s OD pairs and constain *destinations* in a rectangle ranging from (xmin, ymin) to (xmax, ymax)
     
-    void printPairs(); // print all the pairs
-    void printStates(); // print all the seeker and taker states
-    void printMatches(); // print all the matches
-    void iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime = -1); // iterate until |X_{k+1} - X_{k}| < epsilon
+    void printPairs(string address); // print all the pairs
+    void printStates(string address); // print all the seeker and taker states
+    void printMatches(string address); // print all the matches
+    void generateVariables(); // generate variables in the model
+    int iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime = -1); // iterate until |X_{k+1} - X_{k}| < epsilon, return iteration time number
+    void printResults(); // print the iteration results
 };
 
 #endif /* Network_hpp */

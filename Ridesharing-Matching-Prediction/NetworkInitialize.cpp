@@ -15,7 +15,6 @@ Network::Network(int m, int n,
                  double searchRadius,
                  double speed)
 {
-    network = vector<vector<int>>(m, vector<int>(n)); // initialize the network vector
     size = pair<int, int>{m, n}; // initialize the size of the network
     odPairs = vector<OriginDestinationPair>(); // initialize the od pairs vector
     _pickupTime = pickupTime; // initialize the pick up time avg{t^{pk}}
@@ -49,7 +48,7 @@ void Network::generateODPairs(int number, double lambda,
     int xRange = xmax - xmin + 1;
     int yRange = ymax - ymin + 1;
     int destUniformRandNumRange = xRange * yRange;
-    std::default_random_engine generator;
+    std::default_random_engine generator{0};
     std::uniform_int_distribution<int> destDistribution(0, destUniformRandNumRange - 1);
     std::uniform_int_distribution<int> originDistribution(0, (size.first * size.second) - 1);
     for (int i = 0; i < number; i++) {
@@ -60,10 +59,6 @@ void Network::generateODPairs(int number, double lambda,
                                                xmin, ymin, xmax, ymax),
                            lambda));
     }
-    generateSeekerStates(); // generate all the seeker states
-    generateTakerStates(); // generate all the taker states
-    generateMatches(); // generate all the matches
-    // note that when there are several groups of OD pairs, these three functions needs to be called after all the OD pairs are generated
 }
 
 void Network::generateSeekerStates()
@@ -91,11 +86,13 @@ void Network::generateMatches()
     seekerTaker = vector<vector<Match>>(seekerStates.size());
     takerSeeker = vector<vector<Match>>(takerStates.size());
     for (int i = 0; i < seekerStates.size(); i++) {
+        auto seekerState = seekerStates.at(i);
         for (int j = 0; j < takerStates.size(); j++) {
             for (int k = 0; k < takerStates[j].size(); k++) {
+                auto takerState = takerStates.at(j).at(k);
                 auto detourShareDistance =
-                takerStates.at(j).at(k).detourShareDistanceCal(seekerStates.at(i));
-                auto pickupDistance = takerStates.at(j).at(k).currentDistanceCal(seekerStates.at(i));
+                takerState.detourShareDistanceCal(seekerState);
+                auto pickupDistance = takerState.currentDistanceCal(seekerState);
                 if (pickupDistance <= _searchRadius) {
                     if (std::get<1>(detourShareDistance) < _maxDetourTime * _speed) {
                         Match newMatch = Match(i, j, k,
@@ -113,33 +110,44 @@ void Network::generateMatches()
     sortSeekerTaker();
 }
 
-void Network::printPairs()
+void Network::printPairs(string address)
 {
+    ofstream file;
+    file.open(address);
+    file << "id,originX,originY,destX,destY,lambda,Ps\n";
     for (int i = 0; i < odPairs.size(); i++) {
-        printf("The %dth pair: ", i + 1);
-        odPairs.at(i).odPairPrint();
-        printf("\n");
+        auto od = odPairs.at(i);
+        auto ss = seekerStates.at(i);
+        file << i << ','
+        << od.getOrigin().first << ','
+        << od.getOrigin().second << ','
+        << od.getDestination().first << ','
+        << od.getDestination().second << ','
+        << od.getLambda() << ','
+        << ss.getPSeeker() << '\n';
     }
+    file.close();
 }
 
-void Network::printStates()
+void Network::printStates(string address)
 {
-    printf("The seeker states: \n");
-    for (int i = 0; i < seekerStates.size(); i++) {
-        seekerStates.at(i).printState();
-        printf("\n");
-    }
-    printf("The taker states: \n");
+    ofstream file;
+    file.open(address);
+    file << "ODid,takerID,eta,lambda,Pt,rhot\n";
     for (int i = 0; i < takerStates.size(); i++) {
-        printf("The %dth OD pair: \n", i);
         for (int j = 0; j < takerStates.at(i).size(); j++) {
-            takerStates.at(i).at(j).printState();
-            printf("\n");
+            auto ts = takerStates.at(i).at(j);
+            file << i << ',' << j << ','
+            << ts.getEtaTaker() << ','
+            << ts.getLambdaTaker() << ','
+            << ts.getPTaker() << ','
+            << ts.getRhoTaker() << '\n';
         }
     }
+    file.close();
 }
 
-void Network::printMatches()
+void Network::printMatches(string address)
 {
     for (int i = 0; i < seekerTaker.size(); i++) {
         for (int j = 0; j < seekerTaker.at(i).size(); j++) {
