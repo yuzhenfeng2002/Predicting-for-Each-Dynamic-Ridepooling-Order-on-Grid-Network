@@ -20,8 +20,8 @@ int main(int argc, const char * argv[]) {
      void generateODPairs(int number, double lambda,
                           int xmin, int ymin, int xmax, int ymax);
     */
-    Network network = Network(180, 180, 5, 5, 5, 1);
-    network.generateODPairs(1e4, 0.5, 60, 60, 120, 120); // x/y min/max constrain the destination of these OD pairs
+    Network network = Network(180, 180, 1, 5, 5, 1);
+    network.generateODPairs(2000, 0.5, 30, 30, 60, 60); // x/y min/max constrain the destination of these OD pairs
     // you can print the OD pairs, the two types of states and the matches here
     clock_t begin_gen = clock();
     network.generateVariables();
@@ -33,8 +33,8 @@ int main(int argc, const char * argv[]) {
     clock_t end = clock();
     std::cout << "The runtime is: " << end - begin << " us\n";
     std::cout << "The iteration number is: " << iteration_time << " \n";
-    network.printPairs("/Users/fxb/Desktop/拼车预测实验/PAIRS_1e4_2.csv");
-    network.printStates("/Users/fxb/Desktop/拼车预测实验/STATES_1e4_2.csv");
+    // network.printPairs("/Users/fxb/Desktop/拼车预测实验/PAIRS_1e4.csv");
+    // network.printStates("/Users/fxb/Desktop/拼车预测实验/STATES_1e4.csv");
     network.printResults();
     return 0;
 }

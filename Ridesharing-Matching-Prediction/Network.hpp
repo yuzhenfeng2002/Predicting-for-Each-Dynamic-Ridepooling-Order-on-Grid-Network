@@ -42,7 +42,7 @@ private:
     void generateMatches(); // generate all the matches s.t. the two conditions
     pair<int, int> positionIndexToPair(int randInt,
                                        int xmin, int ymin, int xmax, int ymax); // turn the generated rand int to position pair constained in a rectangle ranging from (xmin, ymin) to (xmax, ymax)
-    tuple<double, double, double, double> iterationStep(); // one iteration step
+    tuple<double, double, double, double> iterationStep(double lambdaEpsilon, double probabilityEpsilon); // one iteration step
 public:
     Network(int m, int n,
             double pickupTime,

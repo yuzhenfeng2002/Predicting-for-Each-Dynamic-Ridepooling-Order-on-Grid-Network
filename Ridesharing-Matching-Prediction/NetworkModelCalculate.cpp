@@ -8,7 +8,7 @@
 #include <algorithm>
 #include "Network.hpp"
 
-tuple<double, double, double, double> Network::iterationStep()
+tuple<double, double, double, double> Network::iterationStep(double lambdaEpsilon, double probabilityEpsilon)
 {
     vector<double> lambdaStep = vector<double>();
     vector<double> pSeekerStep = vector<double>();
@@ -50,23 +50,6 @@ tuple<double, double, double, double> Network::iterationStep()
         seekerStates.at(i).setPSeeker(pSeeker);
     }
     
-    // calculate the eta of each taker state
-    for (int i = 0; i < takerStates.size(); i++) {
-        for (int j = 0; j < takerStates.at(i).size(); j++) {
-            takerStates.at(i).at(j).setEtaTaker(0);
-        }
-    }
-    for (int i = 0; i < seekerTaker.size(); i++) {
-        double lambda = odPairs.at(i).getLambda();
-        for (int j = 0; j < seekerTaker.at(i).size(); j++) {
-            auto index = seekerTaker.at(i).at(j).getIndexOfSeekerAndTaker();
-            int indexOD = std::get<1>(index);
-            int indexTaker = std::get<2>(index);
-            lambda *= (1 - takerStates.at(indexOD).at(indexTaker).getRhoTaker());
-            takerStates.at(indexOD).at(indexTaker).setEtaTaker(takerStates.at(indexOD).at(indexTaker).getEtaTaker() + lambda);
-        }
-    }
-    
     for (int i = 0; i < takerStates.size(); i++) {
         for (int j = 0; j < takerStates.at(i).size(); j++) {
             double pTaker = 1 - exp(
@@ -97,6 +80,24 @@ tuple<double, double, double, double> Network::iterationStep()
         }
     }
     
+    // calculate the eta of each taker state
+    for (int i = 0; i < takerStates.size(); i++) {
+        for (int j = 0; j < takerStates.at(i).size(); j++) {
+            takerStates.at(i).at(j).setEtaTaker(0);
+        }
+    }
+    
+    for (int i = 0; i < seekerTaker.size(); i++) {
+        double lambda = odPairs.at(i).getLambda();
+        for (int j = 0; j < seekerTaker.at(i).size(); j++) {
+            auto index = seekerTaker.at(i).at(j).getIndexOfSeekerAndTaker();
+            int indexOD = std::get<1>(index);
+            int indexTaker = std::get<2>(index);
+            lambda *= (1 - takerStates.at(indexOD).at(indexTaker).getRhoTaker());
+            takerStates.at(indexOD).at(indexTaker).setEtaTaker(takerStates.at(indexOD).at(indexTaker).getEtaTaker() + lambda);
+        }
+    }
+    
     return tuple<double, double, double, double>{
         *std::max_element(lambdaStep.begin(), lambdaStep.end()),
         *std::max_element(rhoTakerStep.begin(), rhoTakerStep.end()),
@@ -117,19 +118,15 @@ int Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iter
     int time = 0;
     bool willContinue = true;
     double lambdaStep, rhoTakerStep, pTakerStep, pSeekerStep;
+    printf("time,lambda,rho,p_t,p_s\n");
     do {
-        auto iterationResult = iterationStep();
+        auto iterationResult = iterationStep(lambdaEpsilon, probabilityEpsilon);
         lambdaStep = std::get<0>(iterationResult);
         rhoTakerStep = std::get<1>(iterationResult);
         pTakerStep = std::get<2>(iterationResult);
         pSeekerStep = std::get<3>(iterationResult);
         time ++;
-//        printf("------------------------\n");
-//        printf("The %dth time iteration:\n", time);
-//        printf("lambdaStep = %f\n", lambdaStep);
-//        printf("rhoTakerStep = %f\n", rhoTakerStep);
-//        printf("pTakerStep = %f\n", pTakerStep);
-//        printf("pSeekerStep = %f\n", pSeekerStep);
+        printf("%d,%f,%f,%f,%f\n", time, lambdaStep, rhoTakerStep, pTakerStep, pSeekerStep);
         if (iterationTime == -1) {
             willContinue = true;
         }
