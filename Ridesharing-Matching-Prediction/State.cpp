@@ -50,7 +50,7 @@ double TakerState::currentDistanceCal(SeekerState seekerState)
     return _link.distanceToNode(seekerState.getODPair().getOrigin());
 }
 
-tuple<bool, double, double> TakerState::detourShareDistanceCal(SeekerState seekerState)
+tuple<bool, double, double, double, double> TakerState::detourShareDistanceCal(SeekerState seekerState)
 {
     double dSeekerFOFO = distanceBetweenNodes(seekerState.getODPair().getOrigin(), _odPair.getDestination()) +
     distanceBetweenNodes(_odPair.getDestination(), seekerState.getODPair().getDestination());
@@ -65,8 +65,8 @@ tuple<bool, double, double> TakerState::detourShareDistanceCal(SeekerState seeke
     double dFOFOMax = (dSeekerFOFO - dSeeker) > (dTakerFOFO - dTaker)? (dSeekerFOFO - dSeeker) : (dTakerFOFO - dTaker);
     double dFOLOMax = (dSeekerFOLO - dSeeker) > (dTakerFOLO - dTaker)? (dSeekerFOLO - dSeeker) : (dTakerFOLO - dTaker);
     return dFOFOMax < dFOLOMax ?
-    tuple<bool, double, double>{true, dFOFOMax, distanceBetweenNodes(seekerState.getODPair().getOrigin(), _odPair.getDestination())} :
-    tuple<bool, double, double>{false, dFOLOMax, dSeekerFOLO};
+    tuple<bool, double, double, double, double>{true, dFOFOMax, distanceBetweenNodes(seekerState.getODPair().getOrigin(), _odPair.getDestination()), dSeekerFOFO, dTakerFOFO} :
+    tuple<bool, double, double, double, double>{false, dFOLOMax, dSeekerFOLO, dSeekerFOLO, dTakerFOLO};
 }
 
 double TakerState::getPTaker()

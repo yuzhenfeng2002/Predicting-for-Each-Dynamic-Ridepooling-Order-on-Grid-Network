@@ -19,16 +19,26 @@ private:
     double _sharedDistance;
     double _detourDistance;
     double _pickupDistance;
+    double _seekerDistance;
+    double _takerDistance;
+    double _eta;
     void priorityCal(); // calculate the priority, you can change the function to determine how to calculate it
 
 public:
     Match(int indexSeeker, int indexTakerOD, int indexTaker,
           double sharedDistance,
           double detourDistance,
-          double pickupDistance); // initialize the match
+          double pickupDistance,
+          double seekerDistance,
+          double takerDistance); // initialize the match
     double getPriority(); // get priority
     tuple<int, int, int> getIndexOfSeekerAndTaker(); // get the IndexOfSeekerAndTaker
     void print(); // print the match
+    double getSeekerDistance();
+    double getTakerDistance();
+    double getSharedDistance();
+    void setEta(double eta);
+    double getEta();
 };
 
 #endif /* Match_hpp */

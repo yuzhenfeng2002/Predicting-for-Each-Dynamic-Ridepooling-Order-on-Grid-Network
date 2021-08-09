@@ -16,11 +16,15 @@ void Match::priorityCal()
 Match::Match(int indexSeeker, int indexTakerOD, int indexTaker,
              double sharedDistance,
              double detourDistance,
-             double pickupDistance)
+             double pickupDistance,
+             double seekerDistance,
+             double takerDistance)
 {
     _sharedDistance = sharedDistance;
     _detourDistance = detourDistance;
     _pickupDistance = pickupDistance;
+    _seekerDistance = seekerDistance;
+    _takerDistance = takerDistance;
     indexOfSeekerAndTaker = tuple<int, int, int>{indexSeeker, indexTakerOD, indexTaker};
     priorityCal();
 }
@@ -42,4 +46,29 @@ void Match::print()
     printf("#Parameters:\n");
     printf("Pick-up Distance: %f, Detour Distance: %f, Shared Distance: %f\nPriority: %f\n",
            _pickupDistance, _detourDistance, _sharedDistance, priority);
+}
+
+double Match::getSeekerDistance()
+{
+    return _seekerDistance;
+}
+
+double Match::getTakerDistance()
+{
+    return _takerDistance;
+}
+
+double Match::getSharedDistance()
+{
+    return _sharedDistance;
+}
+
+void Match::setEta(double eta)
+{
+    _eta = eta;
+}
+
+double Match::getEta()
+{
+    return _eta;
 }

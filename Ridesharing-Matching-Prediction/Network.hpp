@@ -31,8 +31,8 @@ private:
     vector<OriginDestinationPair> odPairs;
     vector<SeekerState> seekerStates; // S
     vector<vector<TakerState>> takerStates; // T
-    vector<vector<Match>> seekerTaker; // T_{S(w)}
-    vector<vector<Match>> takerSeeker; // S_{T(a, w)}
+    vector<vector<Match*>> seekerTaker; // T_{S(w)}
+    vector<vector<vector<Match*>>> takerSeeker; // S_{T(a, w)}
     vector<Match> matches; // M
     
 
@@ -57,6 +57,7 @@ public:
     void printMatches(string address); // print all the matches
     void generateVariables(); // generate variables in the model
     int iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime = -1); // iterate until |X_{k+1} - X_{k}| < epsilon, return iteration time number
+    void calPredictionResult(string address);
     void printResults(); // print the iteration results
 };
 

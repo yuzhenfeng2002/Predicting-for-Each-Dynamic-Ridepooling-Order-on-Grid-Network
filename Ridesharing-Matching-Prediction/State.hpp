@@ -42,7 +42,7 @@ private:
 public:
     TakerState(Link link, OriginDestinationPair odPair, double speed, double pickupTime); // initialize the taker state
     double currentDistanceCal(SeekerState seekerState); // calculate the current distance between the taker and the seeker, namely pick-up distance
-    tuple<bool, double, double> detourShareDistanceCal(SeekerState seekerState); // return(isFOFO, detour distance, share distance)
+    tuple<bool, double, double, double, double> detourShareDistanceCal(SeekerState seekerState); // return(isFOFO, detour distance, share distance, Lseeker, Ltaker)
     void printState();
     
     void setPTaker(double p);
