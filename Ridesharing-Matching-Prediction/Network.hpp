@@ -57,8 +57,10 @@ public:
     void printMatches(string address); // print all the matches
     void generateVariables(); // generate variables in the model
     int iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime = -1); // iterate until |X_{k+1} - X_{k}| < epsilon, return iteration time number
-    void calPredictionResult(string address);
+    vector<tuple<double, double, double>> calPredictionResult(string address="");
     void printResults(); // print the iteration results
+    vector<Network> divide();
+    vector<tuple<double, double, double>> combine(vector<Network> networks, string address="");
 };
 
 #endif /* Network_hpp */

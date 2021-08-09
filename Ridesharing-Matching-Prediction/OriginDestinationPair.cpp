@@ -71,3 +71,18 @@ void OriginDestinationPair::odPairPrint()
            _destination.first, _destination.second,
            _lambda);
 }
+
+void OriginDestinationPair::setPreSubOD(OriginDestinationPair *pre_sub_od)
+{
+    _pre_sub_od = pre_sub_od;
+}
+
+void OriginDestinationPair::setFatherODIdx(int idx)
+{
+    father_od_idx = idx;
+}
+
+int OriginDestinationPair::getFatherODIdx()
+{
+    return father_od_idx;
+}

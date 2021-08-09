@@ -19,6 +19,8 @@ class OriginDestinationPair {
 private:
     pair<int, int> _origin;
     pair<int, int> _destination;
+    OriginDestinationPair *_pre_sub_od = NULL;
+    int father_od_idx = -1;
     double _lambda;
 public:
     OriginDestinationPair(pair<int, int> origin,
@@ -29,6 +31,9 @@ public:
     pair<int, int> getDestination(); // get the position of destination
     double getLambda(); // get lambda of the OD
     void odPairPrint(); // print the pair
+    void setPreSubOD(OriginDestinationPair *pre_sub_od);
+    void setFatherODIdx(int idx);
+    int getFatherODIdx();
 };
 
 #endif /* OriginDestinationPair_hpp */

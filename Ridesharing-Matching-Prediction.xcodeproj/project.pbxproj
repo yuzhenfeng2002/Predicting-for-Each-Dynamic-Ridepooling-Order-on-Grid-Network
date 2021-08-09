@@ -14,6 +14,7 @@
 		E31A2A722644D05800C076D8 /* State.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A702644D05800C076D8 /* State.cpp */; };
 		E31A2A77264531F900C076D8 /* Match.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A75264531F900C076D8 /* Match.cpp */; };
 		E31A2A9026481CB300C076D8 /* NetworkModelCalculate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E31A2A8F26481CB200C076D8 /* NetworkModelCalculate.cpp */; };
+		E3F7D60F26C01F53003F62AF /* NetworkDevideAndCombine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E3F7D60E26C01F53003F62AF /* NetworkDevideAndCombine.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,6 +43,7 @@
 		E31A2A75264531F900C076D8 /* Match.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Match.cpp; sourceTree = "<group>"; };
 		E31A2A76264531F900C076D8 /* Match.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Match.hpp; sourceTree = "<group>"; };
 		E31A2A8F26481CB200C076D8 /* NetworkModelCalculate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkModelCalculate.cpp; sourceTree = "<group>"; };
+		E3F7D60E26C01F53003F62AF /* NetworkDevideAndCombine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkDevideAndCombine.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 				E31A2A322643939100C076D8 /* Network.hpp */,
 				E31A2A2E2643937600C076D8 /* OriginDestinationPair.hpp */,
 				E31A2A712644D05800C076D8 /* State.hpp */,
+				E3F7D60E26C01F53003F62AF /* NetworkDevideAndCombine.cpp */,
 			);
 			path = "Ridesharing-Matching-Prediction";
 			sourceTree = "<group>";
@@ -153,6 +156,7 @@
 				E31A2A2626438F6C00C076D8 /* main.cpp in Sources */,
 				E31A2A6E2644CF5C00C076D8 /* Link.cpp in Sources */,
 				E31A2A9026481CB300C076D8 /* NetworkModelCalculate.cpp in Sources */,
+				E3F7D60F26C01F53003F62AF /* NetworkDevideAndCombine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

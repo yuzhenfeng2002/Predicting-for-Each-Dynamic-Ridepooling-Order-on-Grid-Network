@@ -152,11 +152,15 @@ int distanceBetweenNodes(pair<int, int> node1, pair<int, int> node2)
     return abs(node1.first - node2.first) + abs(node1.second - node2.second);
 }
 
-void Network::calPredictionResult(string address)
+vector<tuple<double, double, double>> Network::calPredictionResult(string address)
 {
     ofstream file;
-    file.open(address);
-    file << "id,originX,originY,destX,destY,lambda,Pw,Lw,ew\n";
+    if (address != "")
+    {
+        file.open(address);
+        file << "id,originX,originY,destX,destY,lambda,Pw,Lw,ew\n";
+    }
+    auto result = vector<tuple<double, double, double>>(odPairs.size());
     for (int i = 0; i < odPairs.size(); i++) {
         double pw = 1 - takerStates.at(i).at(takerStates.at(i).size() - 1).getLambdaTaker() / odPairs.at(i).getLambda();
         
@@ -180,7 +184,7 @@ void Network::calPredictionResult(string address)
                 lt_denominator += takerSeeker.at(i).at(j).at(k)->getEta() * takerStates.at(indexOD).at(indexTaker).getRhoTaker();
             }
             if (lt_denominator != 0) {
-                lw += takerStates.at(i).at(j).getLambdaTaker() * lt_numerator / lt_denominator / odPairs.at(i).getLambda();
+                lw += takerStates.at(i).at(j).getLambdaTaker() * lt_numerator / lt_denominator / odPairs.at(i).getLambda() * takerStates.at(i).at(j).getPTaker();
             }
         }
         
@@ -204,20 +208,28 @@ void Network::calPredictionResult(string address)
                 et_denominator += takerSeeker.at(i).at(j).at(k)->getEta() * takerStates.at(indexOD).at(indexTaker).getRhoTaker();
             }
             if (et_denominator != 0) {
-                ew += takerStates.at(i).at(j).getLambdaTaker() * et_numerator / et_denominator / odPairs.at(i).getLambda();
+                ew += takerStates.at(i).at(j).getLambdaTaker() * et_numerator / et_denominator / odPairs.at(i).getLambda() * takerStates.at(i).at(j).getPTaker();
             }
         }
         
-        auto od = odPairs.at(i);
-        file << i << ','
-        << od.getOrigin().first << ','
-        << od.getOrigin().second << ','
-        << od.getDestination().first << ','
-        << od.getDestination().second << ','
-        << od.getLambda() << ','
-        << pw << ',' << lw << ',' << ew << '\n';
+        if (address != "")
+        {
+            auto od = odPairs.at(i);
+            file << i << ','
+            << od.getOrigin().first << ','
+            << od.getOrigin().second << ','
+            << od.getDestination().first << ','
+            << od.getDestination().second << ','
+            << od.getLambda() << ','
+            << pw << ',' << lw << ',' << ew << '\n';
+        }
+        
+        std::get<0>(result.at(i)) = pw;
+        std::get<1>(result.at(i)) = lw;
+        std::get<2>(result.at(i)) = ew;
     }
     file.close();
+    return result;
 }
 
 void Network::printResults()
