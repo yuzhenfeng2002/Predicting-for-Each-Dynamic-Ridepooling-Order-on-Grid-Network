@@ -17,7 +17,7 @@ tuple<double, double, double, double> Network::iterationStep(double lambdaEpsilo
     for (int i = 0; i < takerStates.size(); i++) {
         for (int j = 0; j < takerStates.at(i).size(); j++) {
             if (j == 0) {
-                auto lambdaTaker = odPairs.at(i).getLambda() * (1 - seekerStates.at(i).getPSeeker());
+                auto lambdaTaker = odPairs.at(i)->getLambda() * (1 - seekerStates.at(i).getPSeeker());
                 lambdaStep.push_back(abs(lambdaTaker - takerStates.at(i).at(j).getLambdaTaker()));
                 takerStates.at(i).at(j).setLambdaTaker(lambdaTaker);
             }
@@ -88,7 +88,7 @@ tuple<double, double, double, double> Network::iterationStep(double lambdaEpsilo
     }
     
     for (int i = 0; i < seekerTaker.size(); i++) {
-        double lambda = odPairs.at(i).getLambda();
+        double lambda = odPairs.at(i)->getLambda();
         for (int j = 0; j < seekerTaker.at(i).size(); j++) {
             auto index = seekerTaker.at(i).at(j)->getIndexOfSeekerAndTaker();
             int indexOD = std::get<1>(index);
@@ -114,12 +114,12 @@ void Network::generateVariables()
     // note that when there are several groups of OD pairs, these three functions needs to be called after all the OD pairs are generated
 }
 
-int Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime)
+pair<int, double> Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime)
 {
     int time = 0;
     bool willContinue = true;
     double lambdaStep, rhoTakerStep, pTakerStep, pSeekerStep;
-//    printf("time,lambda,rho,p_t,p_s\n");
+    printf("time,lambda,rho,p_t,p_s\n");
     do {
         auto iterationResult = iterationStep(lambdaEpsilon, probabilityEpsilon);
         lambdaStep = std::get<0>(iterationResult);
@@ -127,7 +127,7 @@ int Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iter
         pTakerStep = std::get<2>(iterationResult);
         pSeekerStep = std::get<3>(iterationResult);
         time ++;
-//        printf("%d,%f,%f,%f,%f\n", time, lambdaStep, rhoTakerStep, pTakerStep, pSeekerStep);
+        printf("%d,%f,%f,%f,%f\n", time, lambdaStep, rhoTakerStep, pTakerStep, pSeekerStep);
         if (iterationTime == -1) {
             willContinue = true;
         }
@@ -148,7 +148,7 @@ int Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iter
     // adjust lambda of ODs of sub-network
     double max = 0;
     for (int i = 0; i < odPairs.size(); i++) {
-        auto nxt_od = odPairs.at(i).getNextSubOD();
+        auto nxt_od = odPairs.at(i)->getNextSubOD();
         if (nxt_od != NULL) {
             auto lambda = takerStates.at(i).at(takerStates.at(i).size() - 1).getLambdaTaker();
             if (max < abs(lambda - nxt_od->getLambda())) {
@@ -157,8 +157,8 @@ int Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iter
             (*nxt_od).setLambda(lambda);
         }
     }
-    printf("Max delta lambda is: %f. \n", max);
-    return time;
+    // printf("Max delta lambda is: %f. \n", max);
+    return std::make_pair(time, max);
 }
 
 int distanceBetweenNodes(pair<int, int> node1, pair<int, int> node2)
@@ -176,7 +176,7 @@ vector<tuple<double, double, double>> Network::calPredictionResult(string addres
     }
     auto result = vector<tuple<double, double, double>>(odPairs.size());
     for (int i = 0; i < odPairs.size(); i++) {
-        double pw = 1 - takerStates.at(i).at(takerStates.at(i).size() - 1).getLambdaTaker() / odPairs.at(i).getLambda();
+        double pw = 1 - takerStates.at(i).at(takerStates.at(i).size() - 1).getLambdaTaker() / odPairs.at(i)->getLambda();
         
         double ls_numerator = 0;
         for (int k = 0; k < seekerTaker.at(i).size(); k++) {
@@ -186,7 +186,7 @@ vector<tuple<double, double, double>> Network::calPredictionResult(string addres
             ls_numerator += seekerTaker.at(i).at(k)->getEta() * takerStates.at(indexOD).at(indexTaker).getRhoTaker() * seekerTaker.at(i).at(k)->getSeekerDistance();
         }
         
-        double lw = ls_numerator * 1.0 / odPairs.at(i).getLambda() + (1 - pw) * distanceBetweenNodes(odPairs.at(i).getOrigin(), odPairs.at(i).getDestination());
+        double lw = ls_numerator * 1.0 / odPairs.at(i)->getLambda() + (1 - pw) * distanceBetweenNodes(odPairs.at(i)->getOrigin(), odPairs.at(i)->getDestination());
         for (int j = 0; j < takerStates.at(i).size(); j++) {
             double lt_numerator = 0;
             double lt_denominator = 0;
@@ -198,7 +198,7 @@ vector<tuple<double, double, double>> Network::calPredictionResult(string addres
                 lt_denominator += takerSeeker.at(i).at(j).at(k)->getEta() * takerStates.at(indexOD).at(indexTaker).getRhoTaker();
             }
             if (lt_denominator != 0) {
-                lw += takerStates.at(i).at(j).getLambdaTaker() * lt_numerator / lt_denominator / odPairs.at(i).getLambda() * takerStates.at(i).at(j).getPTaker();
+                lw += takerStates.at(i).at(j).getLambdaTaker() * lt_numerator / lt_denominator / odPairs.at(i)->getLambda() * takerStates.at(i).at(j).getPTaker();
             }
         }
         
@@ -210,7 +210,7 @@ vector<tuple<double, double, double>> Network::calPredictionResult(string addres
             es_numerator += seekerTaker.at(i).at(k)->getEta() * takerStates.at(indexOD).at(indexTaker).getRhoTaker() * seekerTaker.at(i).at(k)->getSharedDistance();
         }
         
-        double ew = es_numerator * 1.0 / odPairs.at(i).getLambda();
+        double ew = es_numerator * 1.0 / odPairs.at(i)->getLambda();
         for (int j = 0; j < takerStates.at(i).size(); j++) {
             double et_numerator = 0;
             double et_denominator = 0;
@@ -222,7 +222,7 @@ vector<tuple<double, double, double>> Network::calPredictionResult(string addres
                 et_denominator += takerSeeker.at(i).at(j).at(k)->getEta() * takerStates.at(indexOD).at(indexTaker).getRhoTaker();
             }
             if (et_denominator != 0) {
-                ew += takerStates.at(i).at(j).getLambdaTaker() * et_numerator / et_denominator / odPairs.at(i).getLambda() * takerStates.at(i).at(j).getPTaker();
+                ew += takerStates.at(i).at(j).getLambdaTaker() * et_numerator / et_denominator / odPairs.at(i)->getLambda() * takerStates.at(i).at(j).getPTaker();
             }
         }
         
@@ -230,11 +230,11 @@ vector<tuple<double, double, double>> Network::calPredictionResult(string addres
         {
             auto od = odPairs.at(i);
             file << i << ','
-            << od.getOrigin().first << ','
-            << od.getOrigin().second << ','
-            << od.getDestination().first << ','
-            << od.getDestination().second << ','
-            << od.getLambda() << ','
+            << od->getOrigin().first << ','
+            << od->getOrigin().second << ','
+            << od->getDestination().first << ','
+            << od->getDestination().second << ','
+            << od->getLambda() << ','
             << pw << ',' << lw << ',' << ew << '\n';
         }
         

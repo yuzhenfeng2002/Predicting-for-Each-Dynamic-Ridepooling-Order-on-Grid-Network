@@ -17,11 +17,11 @@ using std::tuple;
 
 class SeekerState {
 private:
-    OriginDestinationPair _odPair;
+    OriginDestinationPair* _odPair;
     double pSeeker = 0.5;
 public:
-    SeekerState(OriginDestinationPair odPair); // initialize the seeker state
-    OriginDestinationPair getODPair();
+    SeekerState(OriginDestinationPair* odPair); // initialize the seeker state
+    OriginDestinationPair* getODPair();
     void printState();
     
     void setPSeeker(double p);
@@ -32,7 +32,7 @@ class TakerState
 {
 private:
     Link _link;
-    OriginDestinationPair _odPair;
+    OriginDestinationPair* _odPair;
     double pTaker = 0.5;
     double rhoTaker = 0.5;
     double lambdaTaker = 0;
@@ -40,7 +40,7 @@ private:
     double timeLength;
     int distanceBetweenNodes(pair<int, int> node1, pair<int, int> node2); // calculate the distance between two nodes
 public:
-    TakerState(Link link, OriginDestinationPair odPair, double speed, double pickupTime); // initialize the taker state
+    TakerState(Link link, OriginDestinationPair* odPair, double speed, double pickupTime); // initialize the taker state
     double currentDistanceCal(SeekerState seekerState); // calculate the current distance between the taker and the seeker, namely pick-up distance
     tuple<bool, double, double, double, double> detourShareDistanceCal(SeekerState seekerState); // return(isFOFO, detour distance, share distance, Lseeker, Ltaker)
     void printState();

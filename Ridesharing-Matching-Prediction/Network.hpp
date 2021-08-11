@@ -28,7 +28,7 @@ private:
     double _maxDetourTime;
     double _searchRadius;
     double _speed; // the speed of the vehicle
-    vector<OriginDestinationPair> odPairs;
+    vector<OriginDestinationPair*> odPairs;
     vector<SeekerState> seekerStates; // S
     vector<vector<TakerState>> takerStates; // T
     vector<vector<Match*>> seekerTaker; // T_{S(w)}
@@ -56,7 +56,7 @@ public:
     void printStates(string address); // print all the seeker and taker states
     void printMatches(string address); // print all the matches
     void generateVariables(); // generate variables in the model
-    int iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime = -1); // iterate until |X_{k+1} - X_{k}| < epsilon, return iteration time number
+    pair<int, double> iteration(double lambdaEpsilon, double probabilityEpsilon, int iterationTime = -1); // iterate until |X_{k+1} - X_{k}| < epsilon, return iteration time number
     vector<tuple<double, double, double>> calPredictionResult(string address="");
     void printResults(); // print the iteration results
     vector<Network> divide();

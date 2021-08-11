@@ -16,7 +16,7 @@ Network::Network(int m, int n,
                  double speed)
 {
     size = pair<int, int>{m, n}; // initialize the size of the network
-    odPairs = vector<OriginDestinationPair>(); // initialize the od pairs vector
+    odPairs = vector<OriginDestinationPair*>(); // initialize the od pairs vector
     _pickupTime = pickupTime; // initialize the pick up time avg{t^{pk}}
     _maxDetourTime = maxDetourTime; // initialize the max detour time avg{D}
     _searchRadius = searchRadius; // initialize the search radius avg{R}
@@ -52,7 +52,7 @@ void Network::generateODPairs(int number, double lambda,
     std::uniform_int_distribution<int> destDistribution(0, destUniformRandNumRange - 1);
     std::uniform_int_distribution<int> originDistribution(0, (size.first * size.second) - 1);
     for (int i = 0; i < number; i++) {
-        odPairs.push_back(OriginDestinationPair
+        odPairs.push_back(new OriginDestinationPair
                           (positionIndexToPair(originDistribution(generator),
                                                0, 0, size.first-1, size.second-1),
                            positionIndexToPair(destDistribution(generator),
@@ -73,7 +73,7 @@ void Network::generateTakerStates()
 {
     takerStates = vector<vector<TakerState>>(odPairs.size());
     for (int i = 0; i < odPairs.size(); i++) {
-        auto odLinks = odPairs.at(i).generateLinks();
+        auto odLinks = odPairs.at(i)->generateLinks();
         for (int j = 0; j < odLinks.size(); j++) {
             takerStates[i].push_back(TakerState(odLinks.at(j), odPairs.at(i), _speed, _pickupTime));
         }
@@ -124,11 +124,11 @@ void Network::printPairs(string address)
         auto od = odPairs.at(i);
         auto ss = seekerStates.at(i);
         file << i << ','
-        << od.getOrigin().first << ','
-        << od.getOrigin().second << ','
-        << od.getDestination().first << ','
-        << od.getDestination().second << ','
-        << od.getLambda() << ','
+        << od->getOrigin().first << ','
+        << od->getOrigin().second << ','
+        << od->getDestination().first << ','
+        << od->getDestination().second << ','
+        << od->getLambda() << ','
         << ss.getPSeeker() << '\n';
     }
     file.close();
