@@ -20,6 +20,7 @@ private:
     pair<int, int> _origin;
     pair<int, int> _destination;
     OriginDestinationPair *_pre_sub_od = NULL;
+    OriginDestinationPair *_nxt_sub_od = NULL;
     int father_od_idx = -1;
     double _lambda;
 public:
@@ -32,8 +33,11 @@ public:
     double getLambda(); // get lambda of the OD
     void odPairPrint(); // print the pair
     void setPreSubOD(OriginDestinationPair *pre_sub_od);
+    void setNextSubOD(OriginDestinationPair *nxt_sub_od){_nxt_sub_od = nxt_sub_od;}
     void setFatherODIdx(int idx);
     int getFatherODIdx();
+    OriginDestinationPair* getNextSubOD(){return _nxt_sub_od;}
+    void setLambda(double lambda){_lambda = lambda;}
 };
 
 #endif /* OriginDestinationPair_hpp */

@@ -119,7 +119,7 @@ int Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iter
     int time = 0;
     bool willContinue = true;
     double lambdaStep, rhoTakerStep, pTakerStep, pSeekerStep;
-    printf("time,lambda,rho,p_t,p_s\n");
+//    printf("time,lambda,rho,p_t,p_s\n");
     do {
         auto iterationResult = iterationStep(lambdaEpsilon, probabilityEpsilon);
         lambdaStep = std::get<0>(iterationResult);
@@ -127,7 +127,7 @@ int Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iter
         pTakerStep = std::get<2>(iterationResult);
         pSeekerStep = std::get<3>(iterationResult);
         time ++;
-        printf("%d,%f,%f,%f,%f\n", time, lambdaStep, rhoTakerStep, pTakerStep, pSeekerStep);
+//        printf("%d,%f,%f,%f,%f\n", time, lambdaStep, rhoTakerStep, pTakerStep, pSeekerStep);
         if (iterationTime == -1) {
             willContinue = true;
         }
@@ -144,6 +144,20 @@ int Network::iteration(double lambdaEpsilon, double probabilityEpsilon, int iter
              rhoTakerStep > probabilityEpsilon ||
              pTakerStep > probabilityEpsilon ||
              pSeekerStep > probabilityEpsilon));
+    
+    // adjust lambda of ODs of sub-network
+    double max = 0;
+    for (int i = 0; i < odPairs.size(); i++) {
+        auto nxt_od = odPairs.at(i).getNextSubOD();
+        if (nxt_od != NULL) {
+            auto lambda = takerStates.at(i).at(takerStates.at(i).size() - 1).getLambdaTaker();
+            if (max < abs(lambda - nxt_od->getLambda())) {
+                max = abs(lambda - nxt_od->getLambda());
+            }
+            (*nxt_od).setLambda(lambda);
+        }
+    }
+    printf("Max delta lambda is: %f. \n", max);
     return time;
 }
 

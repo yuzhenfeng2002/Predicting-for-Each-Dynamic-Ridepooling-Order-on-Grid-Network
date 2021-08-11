@@ -44,37 +44,41 @@ vector<Network> Network::divide()
         int mid_node_sub_idx = calSubIndex(mid_node, size) - 1;
         if (mid_node_sub_idx == origin_sub_idx)
         {
-            auto pre_od = OriginDestinationPair(origin, pair<int, int>{mid_node.first, size.second/2}, od.getLambda());
-            pre_od.setFatherODIdx(i);
-            subNetworks.at(origin_sub_idx).odPairs.push_back(pre_od);
-            auto next_od = OriginDestinationPair(pair<int, int>{mid_node.first, size.second/2}, dest, 1e-6);
-            next_od.setPreSubOD(&pre_od);
-            next_od.setFatherODIdx(i);
-            subNetworks.at(dest_sub_idx).odPairs.push_back(next_od);
+            auto pre_od = new OriginDestinationPair(origin, pair<int, int>{mid_node.first, size.second/2}, od.getLambda());
+            auto next_od = new OriginDestinationPair(pair<int, int>{mid_node.first, size.second/2}, dest, 1e-6);
+            next_od->setPreSubOD(pre_od);
+            pre_od->setNextSubOD(next_od);
+            pre_od->setFatherODIdx(i);
+            next_od->setFatherODIdx(i);
+            subNetworks.at(origin_sub_idx).odPairs.push_back(*pre_od);
+            subNetworks.at(dest_sub_idx).odPairs.push_back(*next_od);
         }
         else if (mid_node_sub_idx == dest_sub_idx)
         {
-            auto pre_od = OriginDestinationPair(origin, pair<int, int>{size.first/2, mid_node.second}, od.getLambda());
-            pre_od.setFatherODIdx(i);
-            subNetworks.at(origin_sub_idx).odPairs.push_back(pre_od);
-            auto next_od = OriginDestinationPair(pair<int, int>{size.first/2, mid_node.second}, dest, 1e-6);
-            next_od.setPreSubOD(&pre_od);
-            next_od.setFatherODIdx(i);
-            subNetworks.at(dest_sub_idx).odPairs.push_back(next_od);
+            auto pre_od = new OriginDestinationPair(origin, pair<int, int>{size.first/2, mid_node.second}, od.getLambda());
+            auto next_od = new OriginDestinationPair(pair<int, int>{size.first/2, mid_node.second}, dest, 1e-6);
+            next_od->setPreSubOD(pre_od);
+            pre_od->setNextSubOD(next_od);
+            pre_od->setFatherODIdx(i);
+            next_od->setFatherODIdx(i);
+            subNetworks.at(origin_sub_idx).odPairs.push_back(*pre_od);
+            subNetworks.at(dest_sub_idx).odPairs.push_back(*next_od);
         }
         else
         {
-            auto pre_od = OriginDestinationPair(origin, pair<int, int>{size.first/2, mid_node.second}, od.getLambda());
-            pre_od.setFatherODIdx(i);
-            subNetworks.at(origin_sub_idx).odPairs.push_back(pre_od);
-            auto mid_od = OriginDestinationPair(pair<int, int>{size.first/2, mid_node.second}, pair<int, int>{mid_node.first, size.second/2}, 1e-6);
-            mid_od.setPreSubOD(&pre_od);
-            mid_od.setFatherODIdx(i);
-            subNetworks.at(mid_node_sub_idx).odPairs.push_back(mid_od);
-            auto next_od = OriginDestinationPair(pair<int, int>{mid_node.first, size.second/2}, dest, 1e-6);
-            next_od.setPreSubOD(&mid_od);
-            next_od.setFatherODIdx(i);
-            subNetworks.at(dest_sub_idx).odPairs.push_back(next_od);
+            auto pre_od = new OriginDestinationPair(origin, pair<int, int>{size.first/2, mid_node.second}, od.getLambda());
+            auto mid_od = new OriginDestinationPair(pair<int, int>{size.first/2, mid_node.second}, pair<int, int>{mid_node.first, size.second/2}, 1e-6);
+            auto next_od = new OriginDestinationPair(pair<int, int>{mid_node.first, size.second/2}, dest, 1e-6);
+            pre_od->setNextSubOD(mid_od);
+            mid_od->setNextSubOD(next_od);
+            mid_od->setPreSubOD(pre_od);
+            next_od->setPreSubOD(mid_od);
+            mid_od->setFatherODIdx(i);
+            pre_od->setFatherODIdx(i);
+            next_od->setFatherODIdx(i);
+            subNetworks.at(origin_sub_idx).odPairs.push_back(*pre_od);
+            subNetworks.at(mid_node_sub_idx).odPairs.push_back(*mid_od);
+            subNetworks.at(dest_sub_idx).odPairs.push_back(*next_od);
         }
     }
     return subNetworks;
@@ -88,6 +92,9 @@ vector<tuple<double, double, double>> Network::combine(vector<Network> networks,
         auto sub_result = networks.at(i).calPredictionResult();
         for (int j = 0; j < sub_result.size(); j++) {
             int father_idx = networks.at(i).odPairs.at(j).getFatherODIdx();
+            if (father_idx == 2) {
+                ;
+            }
             auto sub_pw = std::get<0>(sub_result.at(j));
             auto sub_lw = std::get<1>(sub_result.at(j));
             auto sub_ew = std::get<2>(sub_result.at(j));
