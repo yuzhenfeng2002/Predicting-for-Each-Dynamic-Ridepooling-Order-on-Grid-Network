@@ -59,10 +59,14 @@ int main(int argc, const char * argv[]) {
     
     // if network is not divided
     // network.calPredictionResult("/Users/fxb/Desktop/拼车预测实验/RESULT_200.csv");
-    network.combine(networks, "/Users/fxb/Desktop/拼车预测实验/RESULT_2000_combined.csv");
+    network.combine(networks, "/Users/fxb/Desktop/拼车预测实验/RESULT_200_combined.csv");
     std::cout << "The runtime is: " << end_ite - begin_ite << " us\n";
     std::cout << "The iteration number is: " << iteration_time << " \n";
-    // network.printPairs("/Users/fxb/Desktop/拼车预测实验/PAIRS_1e4.csv");
-    // network.printStates("/Users/fxb/Desktop/拼车预测实验/STATES_1e4.csv");
+    for (int i = 0; i < networks.size(); i++) {
+        networks.at(i).printPairs("/Users/fxb/Desktop/拼车预测实验/PAIRS_200_" + std::to_string(i) + ".csv");
+        networks.at(i).printStates("/Users/fxb/Desktop/拼车预测实验/STATES_200_" + std::to_string(i) + ".csv");
+    }
+    // network.printPairs("/Users/fxb/Desktop/拼车预测实验/PAIRS_200.csv");
+    // network.printStates("/Users/fxb/Desktop/拼车预测实验/STATES_200.csv");
     return 0;
 }

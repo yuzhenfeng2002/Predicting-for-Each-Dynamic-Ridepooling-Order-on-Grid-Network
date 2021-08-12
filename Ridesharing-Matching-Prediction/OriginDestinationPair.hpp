@@ -37,6 +37,7 @@ public:
     void setFatherODIdx(int idx);
     int getFatherODIdx();
     OriginDestinationPair* getNextSubOD(){return _nxt_sub_od;}
+    OriginDestinationPair* getPreSubOD(){return _pre_sub_od;}
     void setLambda(double lambda){_lambda = lambda;}
 };
 

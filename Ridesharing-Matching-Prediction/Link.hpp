@@ -24,6 +24,7 @@ public:
     double distanceToNode(pair<int, int> node); // calculate the distance from the link to a node(approximately)
     double getLength(); // get the length
     void linkPrint(); // print the link
+    pair<pair<int, int>, pair<int, int>> getLink(){return std::make_pair(_prevNode, _nextNode);}
 };
 
 

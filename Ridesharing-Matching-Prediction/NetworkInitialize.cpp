@@ -119,7 +119,7 @@ void Network::printPairs(string address)
 {
     ofstream file;
     file.open(address);
-    file << "id,originX,originY,destX,destY,lambda,Ps\n";
+    file << "id,originX,originY,destX,destY,lambda,Ps,fatherIdx\n";
     for (int i = 0; i < odPairs.size(); i++) {
         auto od = odPairs.at(i);
         auto ss = seekerStates.at(i);
@@ -129,7 +129,8 @@ void Network::printPairs(string address)
         << od->getDestination().first << ','
         << od->getDestination().second << ','
         << od->getLambda() << ','
-        << ss.getPSeeker() << '\n';
+        << ss.getPSeeker() << ','
+        << od->getFatherODIdx() << '\n';
     }
     file.close();
 }
@@ -138,11 +139,16 @@ void Network::printStates(string address)
 {
     ofstream file;
     file.open(address);
-    file << "ODid,takerID,eta,lambda,Pt,rhot\n";
+    file << "ODid,takerID,fatherIdx,originX,originY,destX,destY,eta,lambda,Pt,rhot\n";
     for (int i = 0; i < takerStates.size(); i++) {
         for (int j = 0; j < takerStates.at(i).size(); j++) {
             auto ts = takerStates.at(i).at(j);
             file << i << ',' << j << ','
+            << odPairs.at(i)->getFatherODIdx() << ','
+            << ts.getLink().getLink().first.first << ','
+            << ts.getLink().getLink().first.second << ','
+            << ts.getLink().getLink().second.first << ','
+            << ts.getLink().getLink().second.second << ','
             << ts.getEtaTaker() << ','
             << ts.getLambdaTaker() << ','
             << ts.getPTaker() << ','

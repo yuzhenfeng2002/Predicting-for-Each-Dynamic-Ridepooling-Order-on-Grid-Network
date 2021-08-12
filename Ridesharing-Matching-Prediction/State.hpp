@@ -54,5 +54,6 @@ public:
     void setEtaTaker(double eta);
     double getEtaTaker();
     double getTimeLength();
+    Link getLink(){return _link;}
 };
 #endif /* State_hpp */
