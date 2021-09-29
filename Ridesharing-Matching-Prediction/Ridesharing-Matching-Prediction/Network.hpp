@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include "OriginDestinationPair.hpp"
 #include "State.hpp"
 #include "Match.hpp"
@@ -19,6 +20,8 @@
 using std::vector;
 using std::string;
 using std::ofstream;
+using std::ifstream;
+using std::ios;
 
 class Network
 {
@@ -49,6 +52,7 @@ public:
             double maxDetourTime,
             double searchRadius,
             double speed); // initialize a m*n network
+    void generateODPairs(string filePath); // generate OD pairs from a file
     void generateODPairs(int number, double lambda,
                          int xmin, int ymin, int xmax, int ymax); // generate {number}s OD pairs and constain *destinations* in a rectangle ranging from (xmin, ymin) to (xmax, ymax)
     

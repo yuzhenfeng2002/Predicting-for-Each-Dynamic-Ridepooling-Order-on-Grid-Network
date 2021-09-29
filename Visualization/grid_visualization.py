@@ -17,9 +17,9 @@ for i in range(1):
             x2 = int(row[x2_col])
             y1 = int(row[y1_col])
             y2 = int(row[y2_col])
-            if j <= 100:
+            if j <= 2000:
                 # plt.plot([x1, x2, x2], [y1, y1, y2], 'b', linewidth=0.5)
-                plt.plot(x1, y1, 'ro', markersize=3)
-                plt.plot(x2, y2, 'ko', markersize=3)
+                plt.plot(x1, y1, 'ro', markersize=0.5)
+                plt.plot(x2, y2, 'ko', markersize=0.5)
             j += 1
         plt.show()

@@ -42,6 +42,37 @@ void Network::sortSeekerTaker()
     }
 }
 
+void Network::generateODPairs(string filePath)
+{
+    // open csv file
+    ifstream inFile(filePath, ios::in);
+    if (!inFile)
+    {
+        printf("Cannot open the file.\n");
+    }
+    // read csv file
+    string singleLine;
+    while (getline(inFile, singleLine))
+    {
+        std::stringstream ss(singleLine);
+        string singleWord;
+        vector<string> lineArray;
+        while (getline(ss, singleWord, ','))
+        {
+            if (singleWord == "id")
+                break;
+            lineArray.push_back(singleWord);
+        }
+        if (singleWord == "id")
+            continue; // skip the header
+        pair<int, int> origin(atoi(lineArray[1].c_str()), atoi(lineArray[2].c_str()));
+        pair<int, int> destination(atoi(lineArray[3].c_str()), atoi(lineArray[4].c_str()));
+        double lambda = atof(lineArray[5].c_str());
+        odPairs.push_back(new OriginDestinationPair(origin, destination, lambda));
+    }
+    inFile.close();
+}
+
 void Network::generateODPairs(int number, double lambda,
                      int xmin, int ymin, int xmax, int ymax)
 {
