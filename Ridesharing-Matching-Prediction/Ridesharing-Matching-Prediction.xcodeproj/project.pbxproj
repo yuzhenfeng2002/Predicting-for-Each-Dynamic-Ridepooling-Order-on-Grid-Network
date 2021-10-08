@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E33333882704829400CE8F67 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E33333872704829400CE8F67 /* main.cpp */; };
 		E333339B270482D500CE8F67 /* NetworkDivideAndCombine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E333338F270482D400CE8F67 /* NetworkDivideAndCombine.cpp */; };
 		E333339C270482D500CE8F67 /* OriginDestinationPair.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E3333391270482D500CE8F67 /* OriginDestinationPair.cpp */; };
 		E333339D270482D500CE8F67 /* Match.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E3333392270482D500CE8F67 /* Match.cpp */; };
@@ -15,6 +14,7 @@
 		E333339F270482D500CE8F67 /* NetworkModelCalculate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E3333397270482D500CE8F67 /* NetworkModelCalculate.cpp */; };
 		E33333A0270482D500CE8F67 /* Link.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E3333399270482D500CE8F67 /* Link.cpp */; };
 		E33333A1270482D500CE8F67 /* State.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E333339A270482D500CE8F67 /* State.cpp */; };
+		E33333CD27106FC900CE8F67 /* error_test_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E33333CC27106FC900CE8F67 /* error_test_main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,7 +31,6 @@
 
 /* Begin PBXFileReference section */
 		E33333842704829400CE8F67 /* Ridesharing-Matching-Prediction */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Ridesharing-Matching-Prediction"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E33333872704829400CE8F67 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		E333338F270482D400CE8F67 /* NetworkDivideAndCombine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkDivideAndCombine.cpp; sourceTree = "<group>"; };
 		E3333390270482D500CE8F67 /* State.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = State.hpp; sourceTree = "<group>"; };
 		E3333391270482D500CE8F67 /* OriginDestinationPair.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OriginDestinationPair.cpp; sourceTree = "<group>"; };
@@ -44,6 +43,7 @@
 		E3333398270482D500CE8F67 /* OriginDestinationPair.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OriginDestinationPair.hpp; sourceTree = "<group>"; };
 		E3333399270482D500CE8F67 /* Link.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Link.cpp; sourceTree = "<group>"; };
 		E333339A270482D500CE8F67 /* State.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = State.cpp; sourceTree = "<group>"; };
+		E33333CC27106FC900CE8F67 /* error_test_main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = error_test_main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +76,6 @@
 		E33333862704829400CE8F67 /* Ridesharing-Matching-Prediction */ = {
 			isa = PBXGroup;
 			children = (
-				E33333872704829400CE8F67 /* main.cpp */,
 				E3333399270482D500CE8F67 /* Link.cpp */,
 				E3333395270482D500CE8F67 /* Link.hpp */,
 				E3333392270482D500CE8F67 /* Match.cpp */,
@@ -89,6 +88,7 @@
 				E3333398270482D500CE8F67 /* OriginDestinationPair.hpp */,
 				E333339A270482D500CE8F67 /* State.cpp */,
 				E3333390270482D500CE8F67 /* State.hpp */,
+				E33333CC27106FC900CE8F67 /* error_test_main.cpp */,
 			);
 			path = "Ridesharing-Matching-Prediction";
 			sourceTree = "<group>";
@@ -149,11 +149,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E33333882704829400CE8F67 /* main.cpp in Sources */,
 				E333339B270482D500CE8F67 /* NetworkDivideAndCombine.cpp in Sources */,
 				E333339C270482D500CE8F67 /* OriginDestinationPair.cpp in Sources */,
 				E33333A1270482D500CE8F67 /* State.cpp in Sources */,
 				E333339E270482D500CE8F67 /* NetworkInitialize.cpp in Sources */,
+				E33333CD27106FC900CE8F67 /* error_test_main.cpp in Sources */,
 				E33333A0270482D500CE8F67 /* Link.cpp in Sources */,
 				E333339D270482D500CE8F67 /* Match.cpp in Sources */,
 				E333339F270482D500CE8F67 /* NetworkModelCalculate.cpp in Sources */,

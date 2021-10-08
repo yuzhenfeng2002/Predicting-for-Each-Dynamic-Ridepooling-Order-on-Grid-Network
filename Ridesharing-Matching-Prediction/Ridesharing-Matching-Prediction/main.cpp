@@ -25,7 +25,7 @@ int main(int argc, const char * argv[]) {
 //    network.generateODPairs(500, 0.1, 120, 120, 180, 180);
 //    network.generateODPairs(500, 0.05, 0, 0, 180, 180);
 //    network.generateODPairs(200, 0.5, 60, 60, 120, 120);
-    network.generateODPairs("/Users/fxb/Desktop/拼车预测实验/OD_200.csv");
+    network.generateODPairs("/Users/fxb/Desktop/拼车预测实验/OD_376.csv");
     
     // you can print the OD pairs, the two types of states and the matches here
     auto networks = network.divide();
@@ -72,7 +72,7 @@ int main(int argc, const char * argv[]) {
     
     // network.printMatches("/Users/fxb/Desktop/拼车预测实验/MATCH_200.csv");
     // if network is not divided
-    network.calPredictionResult("/Users/fxb/Desktop/拼车预测实验/RESULT_200.csv");
+    network.calPredictionResult("/Users/fxb/Desktop/拼车预测实验/RESULT_376.csv");
     
     // if network is divided
     // network.combine(networks, "/Users/fxb/Desktop/拼车预测实验/RESULT_200_combined.csv");
@@ -83,7 +83,7 @@ int main(int argc, const char * argv[]) {
         networks.at(i).printStates("/Users/fxb/Desktop/拼车预测实验/STATES_200_" + std::to_string(i) + ".csv");
     }
     */
-    network.printPairs("/Users/fxb/Desktop/拼车预测实验/PAIRS_200.csv");
-    network.printStates("/Users/fxb/Desktop/拼车预测实验/STATES_200.csv");
+    network.printPairs("/Users/fxb/Desktop/拼车预测实验/PAIRS_376.csv");
+    network.printStates("/Users/fxb/Desktop/拼车预测实验/STATES_376.csv");
     return 0;
 }

@@ -3,11 +3,11 @@ import random
 import csv
 import numpy as np
 
-OD_NUM = 200
+OD_NUM = 2000
 MAX_RUNTIME = 1000
 OD_pairs = []
-OD_filepath = "/Users/fxb/Desktop/拼车预测实验/OD_200.csv"
-output_filepath = "/Users/fxb/Desktop/拼车预测实验/SIMU_RESULT_200.csv"
+OD_filepath = "/Users/fxb/Desktop/拼车预测实验/OD_2000.csv"
+output_filepath = "/Users/fxb/Desktop/拼车预测实验/SIMU_RESULT_2000.csv"
 with open(OD_filepath, mode='r') as file:
     data = csv.reader(file)
     head = next(data)
