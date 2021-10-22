@@ -2,12 +2,13 @@ import simpy
 import random
 import csv
 import numpy as np
+import pickle
 
-OD_NUM = 2000
+OD_NUM = 1e4
 MAX_RUNTIME = 1000
 OD_pairs = []
-OD_filepath = "/Users/fxb/Desktop/拼车预测实验/OD_1e4.csv"
-output_filepath = "/Users/fxb/Desktop/拼车预测实验/SIMU_RESULT_1e4.csv"
+OD_filepath = "C:\\Users\\admin\\Desktop\\Prediction-Simulation-Data\\OD_1e4.csv"
+output_filepath = "C:\\Users\\admin\\Desktop\\Prediction-Simulation-Data"
 with open(OD_filepath, mode='r') as file:
     data = csv.reader(file)
     head = next(data)
@@ -115,7 +116,9 @@ class Network:
             pass
     
     def output_result(self, filename):
-        np.savetxt(filename, self.record, delimiter=',', fmt='%d')
+        with open(filename + "\\W_INIT_{:.0f}".format(OD_NUM), 'wb') as f:
+            pickle.dump(self.record, f)
+        np.savetxt(filename + "\\SIMU_RESULT_{:.0f}.csv".format(OD_NUM), self.record, delimiter=',', fmt='%d')
 
 random.seed(0)
 env = simpy.Environment()
